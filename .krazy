@@ -1,0 +1,7 @@
+#EXTRA camelcase,contractions,defines,kdebug,multiclasses,null,qenums,style,tipsandthis
+EXTRA contractions,defines,multiclasses,null
+
+# This is a Qt-only project:
+EXCLUDE qclasses
+
+SKIP /build.*/|/old/|/app/src/icons/|/lib/src/synctex|/app/win32/pdfviewer.rc
