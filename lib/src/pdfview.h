@@ -191,7 +191,7 @@ public:
 	QList<Poppler::Page*> popplerPages();
 	QStringList popplerPageLabels();
 
-	/*virtual*/ void setPage(double pageNumber, PositionHandling keepPosition = DontKeepPosition);
+	/*virtual*/ void setPage(double pageNumber, PositionHandling keepPosition = KeepPosition);
 	/**
 	 * This function returns a value containing the number of the current
 	 * page together with the fraction of this page on which the top of the

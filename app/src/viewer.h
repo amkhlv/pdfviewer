@@ -51,7 +51,7 @@ public:
 
     /*virtual*/ QSize sizeHint() const;
 
-    void loadDocument(const QString &file, PdfView::PositionHandling keepPosition = PdfView::DontKeepPosition);
+    void loadDocument(const QString &file, PdfView::PositionHandling keepPosition = PdfView::KeepPosition);
     void closeDocument();
 	Poppler::Document *document();
 
@@ -100,7 +100,7 @@ private:
 	void setToolBarStyle();
 	void readSettings();
 	void writeSettings();
-    void setPage(double page, PdfView::PositionHandling keepPosition = PdfView::DontKeepPosition);
+    void setPage(double page, PdfView::PositionHandling keepPosition = PdfView::KeepPosition);
     int page() const;
 	void selectMouseTool(int which);
 

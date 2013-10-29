@@ -44,14 +44,14 @@ public:
 
     virtual void documentLoaded() = 0;
     virtual void documentClosed() = 0;
-    virtual void pageChanged(double page, PdfView::PositionHandling keepPosition = PdfView::DontKeepPosition) = 0;
+    virtual void pageChanged(double page, PdfView::PositionHandling keepPosition = PdfView::KeepPosition) = 0;
 
 protected:
     DocumentObserver();
 
 	QString fileName() const;
     Poppler::Document* document() const;
-    void setPage(double page, PdfView::PositionHandling keepPosition = PdfView::DontKeepPosition);
+    void setPage(double page, PdfView::PositionHandling keepPosition = PdfView::KeepPosition);
     int page() const;
     void reloadPage();
 
