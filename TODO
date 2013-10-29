@@ -1,0 +1,6 @@
+- add print support (there seems to be no cross-platform way of printing PDF files :( )
+- add fit width, fit to page
+- allow selection to cross page boundaries
+- add annotation support (this seems to be very complicated :( )
+- add support for embedded files
+- add "--clean-file-info-cache" flag which removes the information about files that do not exist anymore

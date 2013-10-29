@@ -1,0 +1,16 @@
+[Desktop Entry]
+Categories=Graphics;Office;Viewer;
+Name=PdfViewer
+GenericName=PDF Viewer
+GenericName[sv]=PDF-visare
+GenericName[de]=PDF-Betrachter
+GenericName[fr]=Visionneuse PDF
+Comment=View Adobe PDF (acrobat) files
+Comment[sv]=Visar Adobe PDF-filer (acrobat-filer)
+Comment[de]=PDF-Betrachter
+Comment[fr]=Visionneuse de fichiers PDF
+Exec=pdfviewer %f
+Terminal=false
+Type=Application
+Icon=pdfviewer
+MimeType=application/pdf;

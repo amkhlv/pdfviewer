@@ -1,0 +1,81 @@
+version 0.7
+- add support for PDF forms
+- move mouse tool changing actions to the library
+- make sure the library is installed in /usr/lib64 when appropriate
+- add option to print multiple pages on one page
+version 0.6 (2012-06-06):
+- disable page selection actions when no document is loaded in the view
+- clear bookmarks menu when a document is closed
+- let cmake find zlib
+- allow to compile without synctex support
+- PdfViewer can now be compiled as app-only or as app+lib, both when qmake
+  and cmake are used
+- add printing support (Windows part is untested, but definitely slow;
+  "Print to PDF" doesn't follow the settings specified in the Print dialog)
+version 0.5.1 (2012-06-04):
+- remove bug: when the PDF file is changed on disk it is not reloaded in
+  PdfViewer
+- small changes to qmake and cmake configuration
+- make the library compilable with -DQT_NO_CAST_FROM_ASCII
+  -DQT_NO_CAST_TO_ASCII -DQT_STRICT_ITERATORS -DQT_NO_URL_CAST_FROM_STRING
+  -DQT_NO_KEYWORDS
+version 0.5 (2012-05-30):
+- refactoring to split the pdf view from the rest of the application and
+  to allow the creation of a library providing a pdfview widget
+- remove crash when clicking on the view when no file has been loaded yet
+  (for several mouse tools)
+- remove crash when the file settings cache is set to a very small number
+- avoid loading invisible pages during zoom when we are at the very start
+  or very end of the document
+- when the toolbar is hidden in a setup without menu bar, the context menu of
+  the page view shows an item "Add Main ToolBar"
+- allow showing the menu bar from the configuration dialog (a restart is
+  needed for this change to take effect)
+- whether to fetch the icons from the local KDE theme can now be configured
+  in the apps main CMakeLists.txt file before compilation
+version 0.4 (2012-04-12):
+- complete rewrite of the view (should be easier to maintain in the future)
+- make sure the toolbar configuration popup menu (right click on toolbar)
+  stays completely inside the screen
+- maintain a separate bookmarks list for each file and remember the list
+  when the file is opened again
+- add different mouse tools: magnify (existed already), browse, select image
+  or text in rectangular area, text selection
+- faster startup by not fetching the icons from the local KDE theme (they can
+  be reenabled by uncommenting the commented code in src/utils/icon.h and
+  then recompiling)
+- remember page positions and zoom factor per file throughout sessions
+- add suport for "forward search" and "inverse search" using synctex
+version 0.3.3 (2012-03-28):
+- update qmake configuration for Windows
+version 0.3.2 (2012-03-26):
+- faster startup if not all docks are visible
+- faster closing of the application when a large document (such as the PGF
+  manual is loaded)
+- adding or removing dock widgets is faster because this doesn't reload the
+  document anymore (but now we have the bug that when all dock widgets are
+  closed, the pages are not recentered)
+version 0.3.1 (2012-03-21):
+- remove bug: program didn't compile on some systems because of not having
+  added QtXml in CMakelists.txt and pdfviewer.pro
+- remove compilation bug in label.cpp on some systems
+- remove bug: changing the page using the page selector in the toolbar
+  doesn't work
+version 0.3 (2012-03-15):
+- add shortcut editing dialog
+- add bookmarks mechanism
+version 0.2 (2012-01-18):
+- change view mode to "continuous"
+- add magnifying glass
+- add shortcuts for the different actions
+- remember window size and dock widget positions on close
+- reload PDF file when it is changed on disk by another program
+- make links in toc clickable
+- make links in PDF file clickable
+- improve the zoom mechanism
+- add search
+- use interface without menubar
+- add presentation mode
+- allow to modify the style of the buttons in the toolbar
+version 0.1 (2009):
+- original version of Poppler Qt4 demo PDF viewer

@@ -1,0 +1,95 @@
+The following are required for compilation:
+- an ordinary C++ development environment (g++, make, C++ libraries and
+  headers, ...)
+- cmake (optional; you can also use qmake)
+- a Qt 4 development environment (libraries, headers, qmake, ...): only
+  QtCore, QtGui and QtXml are required, at least in version 4.7
+- the poppler-qt4 libraries and headers, at least in version 0.16
+- the zlib libraries and headers (optional; if zlib is not installed,
+  synctex support will not be compiled)
+
+In Ubuntu you would obtain those by installing the following packages:
+- build-essential
+- cmake (if you want to install the KDE version)
+- libqt4-dev
+- qt4-dev-tools
+- libpoppler-qt4-dev
+- zlib1g-dev
+
+If the non-standalone version of the app is compiled, then the PdfView library
+must already be installed in your system. See ../lib/INSTALL for instructions.
+
+Install app (depending on an already installed PdfView library) using qmake:
+----------------------------------------------------------------------------
+
+1. Edit the paths in qmake/pdfviewerconfig.pri
+2. Run the following commands (this will create an executable named pdfviewer):
+     mkdir buildqt
+     cd buildqt
+     qmake ../pdfviewer.pro
+     make
+     sudo make install
+
+Note that qmake will tell you where the files will be installed. If
+you don't like the installation directories, you can change them in
+the file qmake/pdfviewerconfig.pri before running make.  Make sure to
+make the changes in qmake/pdfviewerconfig.pri before running make.
+
+In order to uninstall pdfviewer run the following command in the build
+directory:
+  sudo make uninstall
+
+Install standalone (i.e. not depending on a PdfView library) app using qmake:
+-----------------------------------------------------------------------------
+
+1. Edit the paths in app/pdfviewerconfig.pri
+   If zlib is not installed, then synctex support must be disabled by
+   hiding the line   
+     CONFIG += use_synctex
+   in qmake/pdfviewerconfig.pri (i.e. put a # at the beginning of
+   that line).
+2. Run the following commands (this will create a standalone executable
+   named pdfviewer):
+     mkdir buildqt
+     cd buildqt
+     qmake ../pdfviewer-standalone.pro
+     make
+     sudo make install
+
+Note that qmake will tell you where the files will be installed. If
+you don't like the installation directories, you can change them in
+the file qmake/pdfviewerconfig.pri before running make.  Make sure to
+make the changes in qmake/pdfviewerconfig.pri before running make.
+
+In order to uninstall pdfviewer run the following command in the build
+directory:
+  sudo make uninstall
+
+Install app (depending on an already installed PdfView library) using cmake:
+----------------------------------------------------------------------------
+
+1. Edit the paths in cmake/modules/PdfViewerConfig.cmake
+2. Run the following commands (this will create an executable named pdfviewer):
+     mkdir build
+     cd build
+     cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+     make
+     sudo make install
+
+In order to uninstall pdfviewer run the following command in the build
+directory:
+  sudo make uninstall
+
+Compile without QtDBus:
+-----------------------
+
+On some systems QtDBus might not be available (or you may have other reasons
+for not using QtDBus). It is possible to compile PdfViewer without QtDBus
+support. If you use qmake to compile PdfViewer, then you must comment the
+line "CONFIG += qdbus" (i.e. add # at the beginning of that line) in
+qmake/pdfviewer.pro and qmake/pdfviewer-standalone.pro before running qmake;
+if you use cmake, then you must comment the line "set(USE_QDBUS true)"
+(i.e. add # at the beginning of that line) in
+cmake/modules/PdfViewerConfig.cmake before running cmake. Note that when
+QtDBus is disabled, a new PdfViewer window will be opened each time you
+trigger "forward search" in your LaTeX editor.

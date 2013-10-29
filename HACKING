@@ -1,0 +1,7 @@
+The version number of the app and lib must be updated in the following files:
+  app/app.pro
+  app/app-standalone.pro
+  app/CMakeLists.txt
+  lib/cmake/modules/FindPdfView.cmake
+  lib/CMakeLists.txt
+  lib/lib.pro

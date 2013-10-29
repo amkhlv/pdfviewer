@@ -1,0 +1,46 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<!-- File menu -->
+	<file>icons/document-open.png</file>
+	<file>icons/document-open-recent.png</file>
+	<file>icons/document-save-as.png</file>
+	<file>icons/document-print.png</file>
+	<file>icons/application-exit.png</file>
+	<!-- Edit menu -->
+	<file>icons/edit-find.png</file>
+	<file>icons/edit-clear-locationbar-rtl.png</file>
+	<file>icons/go-up.png</file>
+	<file>icons/go-down.png</file>
+	<file>icons/dialog-cancel.png</file>
+	<!-- View menu -->
+	<file>icons/zoom-in.png</file>
+	<file>icons/zoom-out.png</file>
+	<file>icons/zoom-fit-width.png</file>
+	<file>icons/zoom-fit-best.png</file>
+	<file>icons/view-presentation.png</file>
+	<!-- Go menu -->
+	<file>icons/go-first.png</file>
+	<file>icons/go-last.png</file>
+	<file>icons/go-next.png</file>
+	<file>icons/go-previous.png</file>
+	<file>icons/go-jump.png</file>
+	<!-- Bookmarks menu -->
+	<file>icons/bookmarks.png</file>
+	<file>icons/bookmark-new.png</file>
+	<!-- Tools menu -->
+	<file>icons/input-mouse.png</file>
+	<file>icons/page-zoom.png</file>
+	<file>icons/select-rectangular.png</file>
+	<file>icons/draw-text.png</file>
+	<file>icons/image-x-generic.png</file>
+	<file>icons/document-save.png</file>
+	<file>icons/edit-copy.png</file>
+	<!-- Settings menu -->
+	<file>icons/configure.png</file>
+	<file>icons/configure-shortcuts.png</file>
+	<!-- Help menu -->
+	<file>icons/pdfviewer-22.png</file>
+	<file>icons/pdfviewer-64.png</file>
+	<file>icons/qt-logo-22.png</file>
+</qresource>
+</RCC>
