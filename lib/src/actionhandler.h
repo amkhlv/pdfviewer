@@ -47,6 +47,8 @@ private:
 	ZoomAction *m_zoomAction;
 	QAction *m_goToStartAction;
 	QAction *m_goToEndAction;
+    QAction *m_amkhlvDnAction;
+    QAction *m_amkhlvUpAction;
 	QAction *m_goToPreviousPageAction;
 	QAction *m_goToNextPageAction;
 	SelectPageAction *m_goToPageAction;
@@ -57,7 +59,6 @@ private:
 	QAction *m_mouseSelectionAction;
 	QAction *m_mouseTextSelectionAction;
 	QAction *m_showFormsAction;
-
 	QObject *m_goToPageReceiver;
 	QObject *m_zoomReceiver;
 	char *m_goToPageSlot;

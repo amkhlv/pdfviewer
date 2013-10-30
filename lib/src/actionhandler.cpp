@@ -29,6 +29,8 @@ ActionHandler::ActionHandler(QWidget *parent)
 	, m_zoomAction(0)
 	, m_goToStartAction(0)
 	, m_goToEndAction(0)
+    , m_amkhlvDnAction(0)
+    , m_amkhlvUpAction(0)
 	, m_goToPreviousPageAction(0)
 	, m_goToNextPageAction(0)
 	, m_goToPageAction(0)
@@ -104,6 +106,31 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
 			}
 			return m_goToStartAction;
 			break;
+
+    case PdfView::AmkhlvDn:
+      if (!m_amkhlvDnAction)
+        {
+				m_amkhlvDnAction = new QAction(tr("&Amkhlv Dn", "Action"), this);
+				m_amkhlvDnAction->setIconText(tr("AmkhlvDn", "Action icon text: Amkhlv scroll dn"));
+// #ifndef QT_NO_SHORTCUT
+// 				m_amkhlvDnAction->setShortcut(QKeySequence::MoveToEndOfDocument);
+// #endif
+				m_amkhlvDnAction->setObjectName(QLatin1String("amkhlv_dn"));
+				connect(m_amkhlvDnAction, SIGNAL(triggered()), receiver, slot);
+        }
+      return m_amkhlvDnAction;
+      break;
+    case PdfView::AmkhlvUp:
+      if (!m_amkhlvUpAction)
+        {
+				m_amkhlvUpAction = new QAction(tr("&Amkhlv Up", "Action"), this);
+				m_amkhlvUpAction->setIconText(tr("AmkhlvUp", "Action icon text: Amkhlv scroll up"));
+				m_amkhlvUpAction->setObjectName(QLatin1String("amkhlv_up"));
+				connect(m_amkhlvUpAction, SIGNAL(triggered()), receiver, slot);
+        }
+      return m_amkhlvUpAction;
+      break;
+
 
 		case PdfView::GoToEndOfDocument:
 			if (!m_goToEndAction)
@@ -263,6 +290,8 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action)
 		case PdfView::MouseToolSelection: return m_mouseSelectionAction; break;
 		case PdfView::MouseToolTextSelection: return m_mouseTextSelectionAction; break;
 		case PdfView::ShowForms: return m_showFormsAction; break;
+        case PdfView::AmkhlvDn: return m_amkhlvDnAction; break;
+        case PdfView::AmkhlvUp: return m_amkhlvUpAction; break;
 		case PdfView::NoPdfViewAction:
 		default:
 			return 0;
@@ -318,6 +347,10 @@ void ActionHandler::toggleGoToActionsEnabled(bool enabled, int pageNumber, int m
 		m_goToStartAction->setEnabled(enabled && scrollPosition > minScrollPosition);
 	if (m_goToEndAction)
 		m_goToEndAction->setEnabled(enabled && scrollPosition < maxScrollPosition);
+	if (m_amkhlvDnAction)
+		m_amkhlvDnAction->setEnabled(enabled && scrollPosition < maxScrollPosition);
+	if (m_amkhlvUpAction)
+		m_amkhlvUpAction->setEnabled(enabled && scrollPosition > 0);
 	if (m_goToPageAction)
 	{
 		disconnect(m_goToPageAction, SIGNAL(pageSelected(int)), m_goToPageReceiver, m_goToPageSlot);

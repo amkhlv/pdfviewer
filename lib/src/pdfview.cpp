@@ -219,6 +219,24 @@ QAction *PdfView::action(PdfViewAction action)
 			break;
 		}
 
+    case AmkhlvDn:
+		{
+			QAction *amkhlvDnAction = d->m_actionHandler->action(action, this, SLOT(slotAmkhlvDn()));
+			if (!d->m_popplerDocument)
+				amkhlvDnAction->setEnabled(false);
+			return amkhlvDnAction;
+			break;
+		}
+    case AmkhlvUp:
+		{
+			QAction *amkhlvUpAction = d->m_actionHandler->action(action, this, SLOT(slotAmkhlvUp()));
+			if (!d->m_popplerDocument)
+				amkhlvUpAction->setEnabled(false);
+			return amkhlvUpAction;
+			break;
+		}
+      
+
 		case GoToEndOfDocument:
 		{
 			QAction *goToEndAction = d->m_actionHandler->action(action, this, SLOT(slotGoToEndOfDocument()));
@@ -1328,6 +1346,19 @@ void PdfView::slotGoToEndOfDocument()
 	QScrollBar *vbar = verticalScrollBar();
 	vbar->setValue(vbar->maximum());
 }
+
+void PdfView::slotAmkhlvDn()
+{
+	QScrollBar *vbar = verticalScrollBar();
+	vbar->setValue(vbar->value() + 5);
+}
+
+void PdfView::slotAmkhlvUp()
+{
+	QScrollBar *vbar = verticalScrollBar();
+	vbar->setValue(vbar->value() - 5);
+}
+
 
 void PdfView::slotGoToPreviousPage()
 {

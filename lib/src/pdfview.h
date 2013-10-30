@@ -111,7 +111,9 @@ public:
 		MouseToolMagnify,
 		MouseToolSelection,
 		MouseToolTextSelection,
-		ShowForms
+		ShowForms,
+        AmkhlvDn,
+        AmkhlvUp
 	};
 
 	explicit PdfView(QWidget *parent = 0);
@@ -284,6 +286,8 @@ public Q_SLOTS:
 	 * the print dialog.
 	 */
 	void slotPrint();
+    void slotAmkhlvDn();
+    void slotAmkhlvUp();
 
 Q_SIGNALS:
 	/**

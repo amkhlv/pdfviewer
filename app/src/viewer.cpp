@@ -285,6 +285,17 @@ void PdfViewer::createActions()
 
 	m_goToPageAction = m_pdfView->action(PdfView::GoToPage);
 
+    m_amkhlvDnAction = m_pdfView->action(PdfView::AmkhlvDn);
+    m_amkhlvUpAction = m_pdfView->action(PdfView::AmkhlvUp);
+
+#ifndef QT_NO_SHORTCUT
+	ShortcutHandler::instance()->addAction(m_amkhlvDnAction);
+#endif // QT_NO_SHORTCUT
+#ifndef QT_NO_SHORTCUT
+	ShortcutHandler::instance()->addAction(m_amkhlvUpAction);
+#endif // QT_NO_SHORTCUT
+
+
 	// Tools
 	m_mouseBrowseAction = m_pdfView->action(PdfView::MouseToolBrowse);
 	m_mouseBrowseAction->setIcon(Icon("input-mouse"));
@@ -378,9 +389,11 @@ void PdfViewer::createMenus()
 
 	menuBar()->addAction(m_pdfView->action(PdfView::Bookmarks));
 	m_pdfView->action(PdfView::SetBookmark)->setIcon(Icon("bookmark-new"));
+
 	m_pdfView->action(PdfView::PreviousBookmark)->setIcon(Icon("go-up"));
 	m_pdfView->action(PdfView::NextBookmark)->setIcon(Icon("go-down"));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::SetBookmark));
+
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::PreviousBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::NextBookmark));
 
@@ -458,6 +471,8 @@ void PdfViewer::createToolBarsWhenNoMenuBar()
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_goToStartAction);
 	toolsMenu->addAction(m_goToEndAction);
+    toolsMenu->addAction(m_amkhlvDnAction);
+    toolsMenu->addAction(m_amkhlvUpAction);
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_printAction);
 	toolsMenu->addSeparator();
@@ -470,7 +485,10 @@ void PdfViewer::createToolBarsWhenNoMenuBar()
 	m_pdfView->action(PdfView::SetBookmark)->setIcon(Icon("bookmark-new"));
 	m_pdfView->action(PdfView::PreviousBookmark)->setIcon(Icon("go-up"));
 	m_pdfView->action(PdfView::NextBookmark)->setIcon(Icon("go-down"));
+
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::SetBookmark));
+	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvDn));
+	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvUp));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::PreviousBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::NextBookmark));
     m_viewMenu = new QMenu(tr("&View", "Menu title"), toolsMenu);
@@ -488,7 +506,7 @@ void PdfViewer::createToolBarsWhenNoMenuBar()
 	toolsMenu->addSeparator();
 #ifndef QT_NO_SHORTCUT
 	toolsMenu->addAction(QIcon(":/icons/pdfviewer-22.png"), tr("&About %1").arg(QCoreApplication::applicationName()), this, SLOT(slotAbout()));
-	toolsMenu->addAction(QIcon(":/icons/qt-logo-22.png"), tr("About &Qt"), this, SLOT(slotAboutQt()));
+    toolsMenu->addAction(QIcon(":/icons/qt-logo-22.png"), tr("About &Qt"), this, SLOT(slotAboutQt()));
 #endif // QT_NO_SHORTCUT
 
 	// Add everything to the toolbar
