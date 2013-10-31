@@ -113,7 +113,13 @@ public:
 		MouseToolTextSelection,
 		ShowForms,
         AmkhlvDn,
-        AmkhlvUp
+        AmkhlvUp,
+        AmkhlvDnF,
+        AmkhlvUpF,
+        AmkhlvRt,
+        AmkhlvLt,
+        AmkhlvRtF,
+        AmkhlvLtF
 	};
 
 	explicit PdfView(QWidget *parent = 0);
@@ -288,6 +294,12 @@ public Q_SLOTS:
 	void slotPrint();
     void slotAmkhlvDn();
     void slotAmkhlvUp();
+    void slotAmkhlvDnF();
+    void slotAmkhlvUpF();
+    void slotAmkhlvRt();
+    void slotAmkhlvLt();
+    void slotAmkhlvRtF();
+    void slotAmkhlvLtF();
 
 Q_SIGNALS:
 	/**

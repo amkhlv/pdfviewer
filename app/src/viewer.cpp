@@ -287,12 +287,25 @@ void PdfViewer::createActions()
 
     m_amkhlvDnAction = m_pdfView->action(PdfView::AmkhlvDn);
     m_amkhlvUpAction = m_pdfView->action(PdfView::AmkhlvUp);
+    m_amkhlvDnFAction = m_pdfView->action(PdfView::AmkhlvDnF);
+    m_amkhlvUpFAction = m_pdfView->action(PdfView::AmkhlvUpF);
+    m_amkhlvRtAction = m_pdfView->action(PdfView::AmkhlvRt);
+    m_amkhlvLtAction = m_pdfView->action(PdfView::AmkhlvLt);
+    m_amkhlvRtFAction = m_pdfView->action(PdfView::AmkhlvRtF);
+    m_amkhlvLtFAction = m_pdfView->action(PdfView::AmkhlvLtF);
+
 
 #ifndef QT_NO_SHORTCUT
 	ShortcutHandler::instance()->addAction(m_amkhlvDnAction);
+	ShortcutHandler::instance()->addAction(m_amkhlvDnFAction);
+	ShortcutHandler::instance()->addAction(m_amkhlvRtAction);
+	ShortcutHandler::instance()->addAction(m_amkhlvRtFAction);
 #endif // QT_NO_SHORTCUT
 #ifndef QT_NO_SHORTCUT
 	ShortcutHandler::instance()->addAction(m_amkhlvUpAction);
+	ShortcutHandler::instance()->addAction(m_amkhlvUpFAction);
+	ShortcutHandler::instance()->addAction(m_amkhlvLtAction);
+	ShortcutHandler::instance()->addAction(m_amkhlvLtFAction);
 #endif // QT_NO_SHORTCUT
 
 
@@ -402,6 +415,14 @@ void PdfViewer::createMenus()
 	toolsMenu->addAction(m_mouseMagnifyAction);
 	toolsMenu->addAction(m_mouseSelectionAction);
 	toolsMenu->addAction(m_mouseTextSelectionAction);
+    toolsMenu->addAction(m_amkhlvDnAction);
+    toolsMenu->addAction(m_amkhlvUpAction);
+    toolsMenu->addAction(m_amkhlvDnFAction);
+    toolsMenu->addAction(m_amkhlvUpFAction);
+    toolsMenu->addAction(m_amkhlvRtAction);
+    toolsMenu->addAction(m_amkhlvLtAction);
+    toolsMenu->addAction(m_amkhlvRtFAction);
+    toolsMenu->addAction(m_amkhlvLtFAction);
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_pdfView->action(PdfView::ShowForms));
 
@@ -468,11 +489,17 @@ void PdfViewer::createToolBarsWhenNoMenuBar()
 	toolsMenu->addAction(m_findAction);
 //	toolsMenu->addAction(m_findNextAction);
 //	toolsMenu->addAction(m_findPreviousAction);
+    toolsMenu->addAction(m_amkhlvDnAction);
+    toolsMenu->addAction(m_amkhlvUpAction);
+    toolsMenu->addAction(m_amkhlvDnFAction);
+    toolsMenu->addAction(m_amkhlvUpFAction);
+    toolsMenu->addAction(m_amkhlvRtAction);
+    toolsMenu->addAction(m_amkhlvLtAction);
+    toolsMenu->addAction(m_amkhlvRtFAction);
+    toolsMenu->addAction(m_amkhlvLtFAction);
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_goToStartAction);
 	toolsMenu->addAction(m_goToEndAction);
-    toolsMenu->addAction(m_amkhlvDnAction);
-    toolsMenu->addAction(m_amkhlvUpAction);
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_printAction);
 	toolsMenu->addSeparator();
@@ -489,6 +516,12 @@ void PdfViewer::createToolBarsWhenNoMenuBar()
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::SetBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvDn));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvUp));
+	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvDnF));
+	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvUpF));
+	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvRt));
+	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvLt));
+	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvRtF));
+	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvLtF));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::PreviousBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::NextBookmark));
     m_viewMenu = new QMenu(tr("&View", "Menu title"), toolsMenu);

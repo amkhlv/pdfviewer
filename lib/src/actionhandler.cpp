@@ -31,6 +31,12 @@ ActionHandler::ActionHandler(QWidget *parent)
 	, m_goToEndAction(0)
     , m_amkhlvDnAction(0)
     , m_amkhlvUpAction(0)
+    , m_amkhlvDnFAction(0)
+    , m_amkhlvUpFAction(0)
+    , m_amkhlvRtAction(0)
+    , m_amkhlvLtAction(0)
+    , m_amkhlvRtFAction(0)
+    , m_amkhlvLtFAction(0)
 	, m_goToPreviousPageAction(0)
 	, m_goToNextPageAction(0)
 	, m_goToPageAction(0)
@@ -129,6 +135,70 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
 				connect(m_amkhlvUpAction, SIGNAL(triggered()), receiver, slot);
         }
       return m_amkhlvUpAction;
+      break;
+    case PdfView::AmkhlvDnF:
+      if (!m_amkhlvDnFAction)
+        {
+				m_amkhlvDnFAction = new QAction(tr("&Amkhlv Dn Fast", "Action"), this);
+				m_amkhlvDnFAction->setIconText(tr("AmkhlvDnF", "Action icon text: Amkhlv scroll dn fast"));
+				m_amkhlvDnFAction->setObjectName(QLatin1String("amkhlv_dn_fast"));
+				connect(m_amkhlvDnFAction, SIGNAL(triggered()), receiver, slot);
+        }
+      return m_amkhlvDnFAction;
+      break;
+    case PdfView::AmkhlvUpF:
+      if (!m_amkhlvUpFAction)
+        {
+				m_amkhlvUpFAction = new QAction(tr("&Amkhlv Up Fast", "Action"), this);
+				m_amkhlvUpFAction->setIconText(tr("AmkhlvUpF", "Action icon text: Amkhlv scroll up fast"));
+				m_amkhlvUpFAction->setObjectName(QLatin1String("amkhlv_up_fast"));
+				connect(m_amkhlvUpFAction, SIGNAL(triggered()), receiver, slot);
+        }
+      return m_amkhlvUpFAction;
+      break;
+
+    case PdfView::AmkhlvRt:
+      if (!m_amkhlvRtAction)
+        {
+				m_amkhlvRtAction = new QAction(tr("&Amkhlv Rt", "Action"), this);
+				m_amkhlvRtAction->setIconText(tr("AmkhlvRt", "Action icon text: Amkhlv scroll dn"));
+// #ifndef QT_NO_SHORTCUT
+// 				m_amkhlvRtAction->setShortcut(QKeySequence::MoveToEndOfDocument);
+// #endif
+				m_amkhlvRtAction->setObjectName(QLatin1String("amkhlv_rt"));
+				connect(m_amkhlvRtAction, SIGNAL(triggered()), receiver, slot);
+        }
+      return m_amkhlvRtAction;
+      break;
+    case PdfView::AmkhlvLt:
+      if (!m_amkhlvLtAction)
+        {
+				m_amkhlvLtAction = new QAction(tr("&Amkhlv Lt", "Action"), this);
+				m_amkhlvLtAction->setIconText(tr("AmkhlvLt", "Action icon text: Amkhlv scroll up"));
+				m_amkhlvLtAction->setObjectName(QLatin1String("amkhlv_lt"));
+				connect(m_amkhlvLtAction, SIGNAL(triggered()), receiver, slot);
+        }
+      return m_amkhlvLtAction;
+      break;
+    case PdfView::AmkhlvRtF:
+      if (!m_amkhlvRtFAction)
+        {
+				m_amkhlvRtFAction = new QAction(tr("&Amkhlv Rt Fast", "Action"), this);
+				m_amkhlvRtFAction->setIconText(tr("AmkhlvRtF", "Action icon text: Amkhlv scroll dn fast"));
+				m_amkhlvRtFAction->setObjectName(QLatin1String("amkhlv_rt_fast"));
+				connect(m_amkhlvRtFAction, SIGNAL(triggered()), receiver, slot);
+        }
+      return m_amkhlvRtFAction;
+      break;
+    case PdfView::AmkhlvLtF:
+      if (!m_amkhlvLtFAction)
+        {
+				m_amkhlvLtFAction = new QAction(tr("&Amkhlv Lt Fast", "Action"), this);
+				m_amkhlvLtFAction->setIconText(tr("AmkhlvLtF", "Action icon text: Amkhlv scroll up fast"));
+				m_amkhlvLtFAction->setObjectName(QLatin1String("amkhlv_lt_fast"));
+				connect(m_amkhlvLtFAction, SIGNAL(triggered()), receiver, slot);
+        }
+      return m_amkhlvLtFAction;
       break;
 
 
@@ -292,6 +362,12 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action)
 		case PdfView::ShowForms: return m_showFormsAction; break;
         case PdfView::AmkhlvDn: return m_amkhlvDnAction; break;
         case PdfView::AmkhlvUp: return m_amkhlvUpAction; break;
+        case PdfView::AmkhlvDnF: return m_amkhlvDnFAction; break;
+        case PdfView::AmkhlvUpF: return m_amkhlvUpFAction; break;
+        case PdfView::AmkhlvRt: return m_amkhlvRtAction; break;
+        case PdfView::AmkhlvLt: return m_amkhlvLtAction; break;
+        case PdfView::AmkhlvRtF: return m_amkhlvRtFAction; break;
+        case PdfView::AmkhlvLtF: return m_amkhlvLtFAction; break;
 		case PdfView::NoPdfViewAction:
 		default:
 			return 0;
@@ -348,9 +424,21 @@ void ActionHandler::toggleGoToActionsEnabled(bool enabled, int pageNumber, int m
 	if (m_goToEndAction)
 		m_goToEndAction->setEnabled(enabled && scrollPosition < maxScrollPosition);
 	if (m_amkhlvDnAction)
-		m_amkhlvDnAction->setEnabled(enabled && scrollPosition < maxScrollPosition);
+		m_amkhlvDnAction->setEnabled(enabled && scrollPosition < maxScrollPosition - 3);
 	if (m_amkhlvUpAction)
-		m_amkhlvUpAction->setEnabled(enabled && scrollPosition > 0);
+		m_amkhlvUpAction->setEnabled(enabled && scrollPosition > 3);
+	if (m_amkhlvDnFAction)
+		m_amkhlvDnFAction->setEnabled(enabled && scrollPosition < maxScrollPosition - 11);
+	if (m_amkhlvUpFAction)
+		m_amkhlvUpFAction->setEnabled(enabled && scrollPosition > 11);
+	if (m_amkhlvRtAction)
+		m_amkhlvRtAction->setEnabled(enabled && scrollPosition < maxScrollPosition - 3);
+	if (m_amkhlvLtAction)
+		m_amkhlvLtAction->setEnabled(enabled && scrollPosition > 3);
+	if (m_amkhlvRtFAction)
+		m_amkhlvRtFAction->setEnabled(enabled && scrollPosition < maxScrollPosition - 11);
+	if (m_amkhlvLtFAction)
+		m_amkhlvLtFAction->setEnabled(enabled && scrollPosition > 11);
 	if (m_goToPageAction)
 	{
 		disconnect(m_goToPageAction, SIGNAL(pageSelected(int)), m_goToPageReceiver, m_goToPageSlot);

@@ -135,6 +135,12 @@ private:
 	QAction *m_configureAction;
     QAction *m_amkhlvDnAction;
     QAction *m_amkhlvUpAction;
+    QAction *m_amkhlvDnFAction;
+    QAction *m_amkhlvUpFAction;
+    QAction *m_amkhlvRtAction;
+    QAction *m_amkhlvLtAction;
+    QAction *m_amkhlvRtFAction;
+    QAction *m_amkhlvLtFAction;
     QActionGroup *m_settingsRenderBackendGrp;
 
 	QToolButton *m_fileOpenRecentButton;

@@ -49,6 +49,12 @@ private:
 	QAction *m_goToEndAction;
     QAction *m_amkhlvDnAction;
     QAction *m_amkhlvUpAction;
+    QAction *m_amkhlvDnFAction;
+    QAction *m_amkhlvUpFAction;
+    QAction *m_amkhlvRtAction;
+    QAction *m_amkhlvLtAction;
+    QAction *m_amkhlvRtFAction;
+    QAction *m_amkhlvLtFAction;
 	QAction *m_goToPreviousPageAction;
 	QAction *m_goToNextPageAction;
 	SelectPageAction *m_goToPageAction;

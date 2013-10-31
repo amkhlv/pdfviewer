@@ -235,6 +235,55 @@ QAction *PdfView::action(PdfViewAction action)
 			return amkhlvUpAction;
 			break;
 		}
+    case AmkhlvDnF:
+		{
+			QAction *amkhlvDnFAction = d->m_actionHandler->action(action, this, SLOT(slotAmkhlvDnF()));
+			if (!d->m_popplerDocument)
+				amkhlvDnFAction->setEnabled(false);
+			return amkhlvDnFAction;
+			break;
+		}
+    case AmkhlvUpF:
+		{
+			QAction *amkhlvUpFAction = d->m_actionHandler->action(action, this, SLOT(slotAmkhlvUpF()));
+			if (!d->m_popplerDocument)
+				amkhlvUpFAction->setEnabled(false);
+			return amkhlvUpFAction;
+			break;
+		}
+      
+    case AmkhlvRt:
+		{
+			QAction *amkhlvRtAction = d->m_actionHandler->action(action, this, SLOT(slotAmkhlvRt()));
+			if (!d->m_popplerDocument)
+				amkhlvRtAction->setEnabled(false);
+			return amkhlvRtAction;
+			break;
+		}
+    case AmkhlvLt:
+		{
+			QAction *amkhlvLtAction = d->m_actionHandler->action(action, this, SLOT(slotAmkhlvLt()));
+			if (!d->m_popplerDocument)
+				amkhlvLtAction->setEnabled(false);
+			return amkhlvLtAction;
+			break;
+		}
+    case AmkhlvRtF:
+		{
+			QAction *amkhlvRtFAction = d->m_actionHandler->action(action, this, SLOT(slotAmkhlvRtF()));
+			if (!d->m_popplerDocument)
+				amkhlvRtFAction->setEnabled(false);
+			return amkhlvRtFAction;
+			break;
+		}
+    case AmkhlvLtF:
+		{
+			QAction *amkhlvLtFAction = d->m_actionHandler->action(action, this, SLOT(slotAmkhlvLtF()));
+			if (!d->m_popplerDocument)
+				amkhlvLtFAction->setEnabled(false);
+			return amkhlvLtFAction;
+			break;
+		}
       
 
 		case GoToEndOfDocument:
@@ -1350,13 +1399,49 @@ void PdfView::slotGoToEndOfDocument()
 void PdfView::slotAmkhlvDn()
 {
 	QScrollBar *vbar = verticalScrollBar();
-	vbar->setValue(vbar->value() + 5);
+	vbar->setValue(vbar->value() + 3);
 }
 
 void PdfView::slotAmkhlvUp()
 {
 	QScrollBar *vbar = verticalScrollBar();
-	vbar->setValue(vbar->value() - 5);
+	vbar->setValue(vbar->value() - 3);
+}
+
+void PdfView::slotAmkhlvDnF()
+{
+	QScrollBar *vbar = verticalScrollBar();
+	vbar->setValue(vbar->value() + 11);
+}
+
+void PdfView::slotAmkhlvUpF()
+{
+	QScrollBar *vbar = verticalScrollBar();
+	vbar->setValue(vbar->value() - 11);
+}
+
+void PdfView::slotAmkhlvRt()
+{
+	QScrollBar *hbar = horizontalScrollBar();
+	hbar->setValue(hbar->value() + 3);
+}
+
+void PdfView::slotAmkhlvLt()
+{
+	QScrollBar *hbar = horizontalScrollBar();
+	hbar->setValue(hbar->value() - 3);
+}
+
+void PdfView::slotAmkhlvRtF()
+{
+	QScrollBar *hbar = horizontalScrollBar();
+	hbar->setValue(hbar->value() + 11);
+}
+
+void PdfView::slotAmkhlvLtF()
+{
+	QScrollBar *hbar = horizontalScrollBar();
+	hbar->setValue(hbar->value() - 11);
 }
 
 
