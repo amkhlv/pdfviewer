@@ -128,7 +128,8 @@ Q_SIGNALS:
 	void goToPosition(double pos);
 
 private Q_SLOTS:
-	void toggleBookmark();
+    void dropBookmark();
+    void addBookmark();
 	void goToActionBookmark();
 	void goToPreviousBookmark();
 	void goToNextBookmark();
@@ -144,6 +145,7 @@ private:
 	QList<double> m_bookmarks;
 	QString m_fileName;
 	QStringList m_pageLabels;
+    double m_bmjump;
 };
 
 #endif // BOOKMARKSHANDLER_H

@@ -20,6 +20,8 @@
 
 #include <QtGui/QMenu>
 #include "filesettings.h"
+#include <string>
+#include <iostream>
 //#include "icon.h"
 //#include "../shortcuthandler/shortcuthandler.h"
 
@@ -29,22 +31,30 @@ BookmarksHandler::BookmarksHandler(BookmarksWidget *parent)
 {
 	m_bookmarksWidget = parent;
 
-	m_bookmarksMenu = new QMenu(tr("&Bookmarks", "Menu title"), parent->widget());
+    m_bookmarksMenu = new QMenu(tr("&Bookmarks", "Menu title"), parent->widget());
+    m_bmjump = -1;
 
-//	QAction *setBookmarkAction = new QAction(Icon("bookmark-new"), tr("Set &Bookmark", "Action"), m_bookmarksMenu);
-	QAction *setBookmarkAction = new QAction(tr("Set &Bookmark", "Action"), m_bookmarksMenu);
-	setBookmarkAction->setObjectName(QLatin1String("pdfview_bookmarks_set"));
+//	QAction *setBookmarkAction = new QAction(Icon("bookmark-new"), tr("&Set Bookmark", "Action"), m_bookmarksMenu);
+    QAction *setBookmarkAction = new QAction(tr("&Set Bookmark", "Action"), m_bookmarksMenu);
+    QAction *unsetBookmarkAction = new QAction(tr("&UnSet Bookmark", "Action"), m_bookmarksMenu);
+    setBookmarkAction->setObjectName(QLatin1String("pdfview_bookmarks_set"));
+    unsetBookmarkAction->setObjectName(QLatin1String("pdfview_bookmarks_unset"));
 #ifndef QT_NO_SHORTCUT
 	setBookmarkAction->setShortcut(tr("Ctrl+B", "Bookmarks|Set"));
+    unsetBookmarkAction->setShortcut(tr("Ctrl+U", "Bookmarks|UnSet"));
 #endif // QT_NO_SHORTCUT
 #ifndef QT_NO_STATUSTIP
 	setBookmarkAction->setStatusTip(tr("Set or unset a bookmark at the current line"));
+    unsetBookmarkAction->setStatusTip(tr("toggle a bookmark at the current line"));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
 	setBookmarkAction->setWhatsThis(tr("<p>Set or unset a bookmark at the current line.</p>"));
+    unsetBookmarkAction->setWhatsThis(tr("<p>toggle a bookmark at the current line.</p>"));
 #endif // QT_NO_WHATSTHIS
-	connect(setBookmarkAction, SIGNAL(triggered()), this, SLOT(toggleBookmark()));
+    connect(setBookmarkAction, SIGNAL(triggered()), this, SLOT(addBookmark()));
 	m_bookmarksMenu->addAction(setBookmarkAction);
+    connect(unsetBookmarkAction, SIGNAL(triggered()), this, SLOT(dropBookmark()));
+    m_bookmarksMenu->addAction(unsetBookmarkAction);
 //#ifndef QT_NO_SHORTCUT
 //	ShortcutHandler::instance()->addAction(setBookmarkAction);
 //#endif // QT_NO_SHORTCUT
@@ -149,7 +159,7 @@ void BookmarksHandler::updateActions()
 			break;
 		}
 	}
-	bookmarkActions.at(0)->setText(which >= 0 ? tr("Unset &Bookmark", "Action") : tr("Set &Bookmark", "Action"));
+    bookmarkActions.at(0)->setText(which >= 0 ? tr("&Unset Bookmark", "Action") : tr("&Set Bookmark", "Action"));
 	// XXX disabling the following causes Alt+Up and Alt+Down not to be caught anymore :(
 	bookmarkActions.at(1)->setEnabled(m_bookmarks.size() > 0 && pos > m_bookmarks.at(0) && !qFuzzyCompare(pos, m_bookmarks.at(0)));
 	bookmarkActions.at(2)->setEnabled(m_bookmarks.size() > 0 && pos < m_bookmarks.at(m_bookmarks.size() - 1) && !qFuzzyCompare(pos, m_bookmarks.at(m_bookmarks.size() - 1)));
@@ -160,9 +170,9 @@ void BookmarksHandler::updateActions()
 
 void BookmarksHandler::insertBookmark(int index, double pos)
 {
-//	QAction *action = new QAction(tr("Page %1").arg(QString::number(int(pos))), m_bookmarksMenu);
+    //	QAction *action = new QAction(tr("Page %1").arg(QString::number(int(pos))), m_bookmarksMenu);
 	Q_ASSERT_X(int(pos) < m_pageLabels.size(), "BookmarksHandler", "make sure to call setPageLabels() before inserting bookmarks with insertBookmark(), appendBookmark(), toggleBookmark() or loadBookmarks()");
-	QAction *action = new QAction(tr("Page %1").arg(m_pageLabels.at(int(pos))), m_bookmarksMenu);
+    QAction *action = new QAction(tr("&%1 : Page %2").arg(char(index + 65)).arg(m_pageLabels.at(int(pos))), m_bookmarksMenu);
 	action->setData(pos);
 	connect(action, SIGNAL(triggered()), this, SLOT(goToActionBookmark()));
 	if (index >= 0 && index < m_bookmarks.size())
@@ -183,7 +193,8 @@ void BookmarksHandler::appendBookmark(double pos)
 {
 	if (pos < 0)
 		return;
-	insertBookmark(-1, pos); // using -1 as index ensures that pos will be appended at the end of the bookmarks list
+    //insertBookmark(-1, pos); // using -1 as index ensures that pos will be appended at the end of the bookmarks list
+    insertBookmark(m_bookmarks.size(), pos);
 }
 
 void BookmarksHandler::removeBookmark(int index)
@@ -192,7 +203,9 @@ void BookmarksHandler::removeBookmark(int index)
 	{
 		const double pos = m_bookmarks.at(index);
 		m_bookmarks.removeAt(index);
-		m_bookmarksMenu->removeAction(m_bookmarksMenu->actions().at(index+4)); // 4 is the number of actions defined in the constructor
+        m_bookmarksMenu->removeAction(m_bookmarksMenu->actions().at(index+5));
+        // This is ugly: 5 is the number of actions defined in the constructor,
+        // because there are 4 items in the menu above the bookmarks list.
 		updateActions();
 		Q_EMIT bookmarkUpdated(pos);
 	}
@@ -203,23 +216,40 @@ void BookmarksHandler::removeBookmarkAtPosition(double pos)
 	removeBookmark(m_bookmarks.indexOf(pos));
 }
 
-void BookmarksHandler::toggleBookmark()
+void BookmarksHandler::addBookmark()
+{
+    const double pos = m_bookmarksWidget->position();
+    bool already_exists = false;
+    for (int i = 0; i < m_bookmarks.size(); ++i)
+    {
+        if (qFuzzyCompare(m_bookmarks.at(i), pos))
+        {
+            return;
+            already_exists = true;
+        }
+    }
+    if (!already_exists) { appendBookmark(pos); }
+}
+
+void BookmarksHandler::dropBookmark()
 {
 	const double pos = m_bookmarksWidget->position();
+    //std::cout << " going to remove " << m_bmjump << std::endl;
 	for (int i = 0; i < m_bookmarks.size(); ++i)
 	{
-		if (qFuzzyCompare(m_bookmarks.at(i), pos))
+        //std::cout << m_bmjump << "vs" << m_bookmarks.at(i) << std::endl;
+        if (qFuzzyCompare(m_bookmarks.at(i), m_bmjump))
 		{
 			removeBookmark(i);
 			return;
 		}
-		else if (m_bookmarks.at(i) > pos)
-		{
-			insertBookmark(i, pos);
-			return;
-		}
+//		else if (m_bookmarks.at(i) > pos)
+//		{
+//			insertBookmark(i, pos);
+//			return;
+//		}
 	}
-	appendBookmark(pos); // if pos is larger than any number in the list, then we insert pos at the end of the list
+//	appendBookmark(pos); // if pos is larger than any number in the list, then we insert pos at the end of the list
 }
 
 void BookmarksHandler::clear()
@@ -233,8 +263,12 @@ void BookmarksHandler::clear()
 
 void BookmarksHandler::goToActionBookmark()
 {
-	QAction *action = qobject_cast<QAction*>(sender());
-	Q_EMIT goToPosition(action->data().toDouble());
+
+    QAction *action = qobject_cast<QAction*>(sender());
+    m_bmjump = action->data().toDouble();
+    //std::cout << " jumping to bookmark position: " << m_bmjump << std::endl ;
+    Q_EMIT goToPosition(m_bmjump);
+
 }
 
 void BookmarksHandler::goToPreviousBookmark()
