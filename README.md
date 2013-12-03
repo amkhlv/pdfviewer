@@ -3,8 +3,20 @@ PdfViewer
 
 This is a clone of [PdfViewer](http://qt-apps.org/content/show.php?content=149637) from http://QT-Apps.org
 
-It maintains the scroll position when going to next page or previous page.
-It also has keyboard shortcuts for both vertical and horizontal scrolling.
+Differences with the original version:
+
+* maintains the scroll position when going to next page or previous page
+
+* has keyboard shortcuts for both vertical and horizontal scrolling
+
+* modified bookmarks handling:
+
+    - separate adding and deleting of bookmarks, instead of a single toggle function
+
+    - charhints in the bookmarks menu
+
+
+
 
 Build and install
 =================
