@@ -324,6 +324,7 @@ QAction *PdfView::action(PdfViewAction action)
 
 		case Bookmarks:
 		case SetBookmark:
+        case UnSetBookmark:
 		case PreviousBookmark:
 		case NextBookmark:
 			if (!d->m_bookmarksHandler)
@@ -337,10 +338,12 @@ QAction *PdfView::action(PdfViewAction action)
 				return d->m_bookmarksHandler->menuAction();
 			else if (action == SetBookmark)
 				return d->m_bookmarksHandler->action(0);
+            else if (action == UnSetBookmark)
+                return d->m_bookmarksHandler->action(1);
 			else if (action == PreviousBookmark)
-				return d->m_bookmarksHandler->action(1);
+                return d->m_bookmarksHandler->action(2);
 			else if (action == NextBookmark)
-				return d->m_bookmarksHandler->action(2);
+                return d->m_bookmarksHandler->action(3);
 			break;
 
 		case Print:
@@ -585,6 +588,7 @@ bool PdfView::load(const QString &fileName)
 		d->m_bookmarksHandler->setPageLabels(d->m_popplerPageLabels); // must be done before loadBookmarks()
 		d->m_bookmarksHandler->loadBookmarks(d->m_fileName);
 		action(PdfView::SetBookmark)->setEnabled(true);
+        action(PdfView::UnSetBookmark)->setEnabled(true);
 	}
 
 	return true;
@@ -675,6 +679,7 @@ void PdfView::close()
 		d->m_bookmarksHandler->saveBookmarks();
 		d->m_bookmarksHandler->clear();
 		action(PdfView::SetBookmark)->setEnabled(false);
+        action(PdfView::UnSetBookmark)->setEnabled(false);
 	}
 }
 

@@ -402,11 +402,12 @@ void PdfViewer::createMenus()
 
 	menuBar()->addAction(m_pdfView->action(PdfView::Bookmarks));
 	m_pdfView->action(PdfView::SetBookmark)->setIcon(Icon("bookmark-new"));
+    m_pdfView->action(PdfView::UnSetBookmark)->setIcon(Icon("dialog-cancel"));
 
 	m_pdfView->action(PdfView::PreviousBookmark)->setIcon(Icon("go-up"));
 	m_pdfView->action(PdfView::NextBookmark)->setIcon(Icon("go-down"));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::SetBookmark));
-
+    ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::UnSetBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::PreviousBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::NextBookmark));
 
@@ -510,10 +511,12 @@ void PdfViewer::createToolBarsWhenNoMenuBar()
 	m_pdfView->action(PdfView::Bookmarks)->setText(tr("Boo&kmarks", "Menu title"));
 	m_pdfView->action(PdfView::Bookmarks)->setIcon(Icon("bookmarks"));
 	m_pdfView->action(PdfView::SetBookmark)->setIcon(Icon("bookmark-new"));
+    m_pdfView->action(PdfView::UnSetBookmark)->setIcon(Icon("dialog-cancel"));
 	m_pdfView->action(PdfView::PreviousBookmark)->setIcon(Icon("go-up"));
 	m_pdfView->action(PdfView::NextBookmark)->setIcon(Icon("go-down"));
 
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::SetBookmark));
+    ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::UnSetBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvDn));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvUp));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvDnF));

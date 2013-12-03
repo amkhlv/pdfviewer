@@ -23,7 +23,7 @@
 #include <string>
 #include <iostream>
 //#include "icon.h"
-//#include "../shortcuthandler/shortcuthandler.h"
+//#include "../../../app/src/shortcuthandler/shortcuthandler.h"
 
 BookmarksHandler::BookmarksHandler(BookmarksWidget *parent)
 	: QObject(parent->widget())
@@ -56,11 +56,12 @@ BookmarksHandler::BookmarksHandler(BookmarksWidget *parent)
     connect(unsetBookmarkAction, SIGNAL(triggered()), this, SLOT(dropBookmark()));
     m_bookmarksMenu->addAction(unsetBookmarkAction);
 //#ifndef QT_NO_SHORTCUT
-//	ShortcutHandler::instance()->addAction(setBookmarkAction);
+//ShortcutHandler::instance()->addAction(setBookmarkAction);
+//ShortcutHandler::instance()->addAction(unsetBookmarkAction);
 //#endif // QT_NO_SHORTCUT
 
 //	QAction *previousBookmarkAction = new QAction(Icon("go-up"), tr("&Previous Bookmark", "Action"), m_bookmarksMenu);
-	QAction *previousBookmarkAction = new QAction(tr("&Previous Bookmark", "Action"), m_bookmarksMenu);
+    QAction *previousBookmarkAction = new QAction(tr("&Previous Bookmark", "Action"), m_bookmarksMenu);
 	previousBookmarkAction->setObjectName(QLatin1String("pdfview_bookmarks_prev"));
 #ifndef QT_NO_SHORTCUT
 	previousBookmarkAction->setShortcut(tr("Alt+Up", "Bookmarks|Previous"));
@@ -149,20 +150,20 @@ void BookmarksHandler::setPageLabels(const QStringList &labels)
 void BookmarksHandler::updateActions()
 {
 	const double pos = m_bookmarksWidget->position();
-	int which = -1;
 	QList<QAction*> bookmarkActions = m_bookmarksMenu->actions();
-	for (int i = 0; i < m_bookmarks.size(); ++i)
-	{
-		if (qFuzzyCompare(m_bookmarks.at(i), pos))
-		{
-			which = i;
-			break;
-		}
-	}
-    bookmarkActions.at(0)->setText(which >= 0 ? tr("&Unset Bookmark", "Action") : tr("&Set Bookmark", "Action"));
+//    int which = -1;
+//	for (int i = 0; i < m_bookmarks.size(); ++i)
+//	{
+//		if (qFuzzyCompare(m_bookmarks.at(i), pos))
+//		{
+//			which = i;
+//			break;
+//		}
+//	}
+    // bookmarkActions.at(0)->setText(which >= 0 ? tr("&Unset Bookmark", "Action") : tr("&Set Bookmark", "Action"));
 	// XXX disabling the following causes Alt+Up and Alt+Down not to be caught anymore :(
-	bookmarkActions.at(1)->setEnabled(m_bookmarks.size() > 0 && pos > m_bookmarks.at(0) && !qFuzzyCompare(pos, m_bookmarks.at(0)));
-	bookmarkActions.at(2)->setEnabled(m_bookmarks.size() > 0 && pos < m_bookmarks.at(m_bookmarks.size() - 1) && !qFuzzyCompare(pos, m_bookmarks.at(m_bookmarks.size() - 1)));
+    bookmarkActions.at(2)->setEnabled(m_bookmarks.size() > 0 && pos > m_bookmarks.at(0) && !qFuzzyCompare(pos, m_bookmarks.at(0)));
+    bookmarkActions.at(3)->setEnabled(m_bookmarks.size() > 0 && pos < m_bookmarks.at(m_bookmarks.size() - 1) && !qFuzzyCompare(pos, m_bookmarks.at(m_bookmarks.size() - 1)));
 }
 
 /***************************************************************************/
@@ -235,7 +236,7 @@ void BookmarksHandler::addBookmark()
 
 void BookmarksHandler::dropBookmark()
 {
-	const double pos = m_bookmarksWidget->position();
+    //const double pos = m_bookmarksWidget->position();
     QList<double> oldbm;
     //std::cout << " going to remove " << m_bmjump << std::endl;
 	for (int i = 0; i < m_bookmarks.size(); ++i)
@@ -280,17 +281,20 @@ void BookmarksHandler::goToActionBookmark()
 
 void BookmarksHandler::goToPreviousBookmark()
 {
-	const double pos = m_bookmarksWidget->position();
+    //const double pos = m_bookmarksWidget->position();
+    const double pos = m_bmjump ;
 	for (int i = m_bookmarks.size() - 1; i >= 0; --i)
 	{
 		if (qFuzzyCompare(pos, m_bookmarks.at(i)) && i > 0) // when the bookmarks are saved and reloaded on the next startup, they are not exact anymore, so we must use qFuzzyCompare() to test whether we are on a bookmark; this must happen before the else-part to avoid staying on the current bookmark
 		{
-			Q_EMIT goToPosition(m_bookmarks.at(i-1));
+            m_bmjump = m_bookmarks.at(i-1);
+            Q_EMIT goToPosition(m_bookmarks.at(i-1));
 			return;
 		}
 		else if (pos > m_bookmarks.at(i))
 		{
-			Q_EMIT goToPosition(m_bookmarks.at(i));
+            m_bmjump = m_bookmarks.at(i);
+            Q_EMIT goToPosition(m_bookmarks.at(i));
 			return;
 		}
 	}
@@ -298,17 +302,20 @@ void BookmarksHandler::goToPreviousBookmark()
 
 void BookmarksHandler::goToNextBookmark()
 {
-	const double pos = m_bookmarksWidget->position();
+    // const double pos = m_bookmarksWidget->position();
+    const double pos = m_bmjump ;
 	for (int i = 0; i < m_bookmarks.size(); ++i)
 	{
 		if (qFuzzyCompare(pos, m_bookmarks.at(i)) && i < m_bookmarks.size() - 1) // when the bookmarks are saved and reloaded on the next startup, they are not exact anymore, so we must use qFuzzyCompare() to test whether we are on a bookmark; this must happen before the else-part to avoid staying on the current bookmark
 		{
-			Q_EMIT goToPosition(m_bookmarks.at(i+1));
+            m_bmjump = m_bookmarks.at(i+1);
+            Q_EMIT goToPosition(m_bookmarks.at(i+1));
 			return;
 		}
 		else if (pos < m_bookmarks.at(i))
 		{
-			Q_EMIT goToPosition(m_bookmarks.at(i));
+            m_bmjump = m_bookmarks.at(i);
+            Q_EMIT goToPosition(m_bookmarks.at(i));
 			return;
 		}
 	}

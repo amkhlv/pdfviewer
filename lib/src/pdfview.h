@@ -104,6 +104,7 @@ public:
 		GoToPage,
 		Bookmarks,
 		SetBookmark,
+        UnSetBookmark,
 		PreviousBookmark,
 		NextBookmark,
 		Print,
