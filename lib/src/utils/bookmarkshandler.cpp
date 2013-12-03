@@ -231,17 +231,19 @@ void BookmarksHandler::addBookmark()
     if (!already_exists) { appendBookmark(pos); }
 }
 
+
+
 void BookmarksHandler::dropBookmark()
 {
 	const double pos = m_bookmarksWidget->position();
+    QList<double> oldbm;
     //std::cout << " going to remove " << m_bmjump << std::endl;
 	for (int i = 0; i < m_bookmarks.size(); ++i)
 	{
         //std::cout << m_bmjump << "vs" << m_bookmarks.at(i) << std::endl;
-        if (qFuzzyCompare(m_bookmarks.at(i), m_bmjump))
+        if (!qFuzzyCompare(m_bookmarks.at(i), m_bmjump))
 		{
-			removeBookmark(i);
-			return;
+            oldbm.append(m_bookmarks.at(i));
 		}
 //		else if (m_bookmarks.at(i) > pos)
 //		{
@@ -249,6 +251,11 @@ void BookmarksHandler::dropBookmark()
 //			return;
 //		}
 	}
+    clear();
+    for (int i = 0; i < oldbm.size(); ++i)
+    {
+        insertBookmark(i, oldbm.at(i))   ;
+    }
 //	appendBookmark(pos); // if pos is larger than any number in the list, then we insert pos at the end of the list
 }
 
