@@ -116,8 +116,8 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
     case PdfView::AmkhlvDn:
       if (!m_amkhlvDnAction)
         {
-				m_amkhlvDnAction = new QAction(tr("&Amkhlv Dn", "Action"), this);
-				m_amkhlvDnAction->setIconText(tr("AmkhlvDn", "Action icon text: Amkhlv scroll dn"));
+                m_amkhlvDnAction = new QAction(tr("Scroll Dn Fine", "Action"), this);
+                m_amkhlvDnAction->setIconText(tr("ScrollDnFine", "Action icon text: fine scroll dn"));
 // #ifndef QT_NO_SHORTCUT
 // 				m_amkhlvDnAction->setShortcut(QKeySequence::MoveToEndOfDocument);
 // #endif
@@ -129,8 +129,8 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
     case PdfView::AmkhlvUp:
       if (!m_amkhlvUpAction)
         {
-				m_amkhlvUpAction = new QAction(tr("&Amkhlv Up", "Action"), this);
-				m_amkhlvUpAction->setIconText(tr("AmkhlvUp", "Action icon text: Amkhlv scroll up"));
+                m_amkhlvUpAction = new QAction(tr("Scroll Up Fine", "Action"), this);
+                m_amkhlvUpAction->setIconText(tr("ScrollUpFine", "Action icon text: fine scroll up"));
 				m_amkhlvUpAction->setObjectName(QLatin1String("amkhlv_up"));
 				connect(m_amkhlvUpAction, SIGNAL(triggered()), receiver, slot);
         }
@@ -139,8 +139,8 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
     case PdfView::AmkhlvDnF:
       if (!m_amkhlvDnFAction)
         {
-				m_amkhlvDnFAction = new QAction(tr("&Amkhlv Dn Fast", "Action"), this);
-				m_amkhlvDnFAction->setIconText(tr("AmkhlvDnF", "Action icon text: Amkhlv scroll dn fast"));
+                m_amkhlvDnFAction = new QAction(tr("Scroll Dn Medium", "Action"), this);
+                m_amkhlvDnFAction->setIconText(tr("ScrollDnMedium", "Action icon text: medium scroll dn"));
 				m_amkhlvDnFAction->setObjectName(QLatin1String("amkhlv_dn_fast"));
 				connect(m_amkhlvDnFAction, SIGNAL(triggered()), receiver, slot);
         }
@@ -149,8 +149,8 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
     case PdfView::AmkhlvUpF:
       if (!m_amkhlvUpFAction)
         {
-				m_amkhlvUpFAction = new QAction(tr("&Amkhlv Up Fast", "Action"), this);
-				m_amkhlvUpFAction->setIconText(tr("AmkhlvUpF", "Action icon text: Amkhlv scroll up fast"));
+                m_amkhlvUpFAction = new QAction(tr("Scroll Up Medium", "Action"), this);
+                m_amkhlvUpFAction->setIconText(tr("ScrollUpMedium", "Action icon text: medium scroll up"));
 				m_amkhlvUpFAction->setObjectName(QLatin1String("amkhlv_up_fast"));
 				connect(m_amkhlvUpFAction, SIGNAL(triggered()), receiver, slot);
         }
@@ -160,11 +160,8 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
     case PdfView::AmkhlvRt:
       if (!m_amkhlvRtAction)
         {
-				m_amkhlvRtAction = new QAction(tr("&Amkhlv Rt", "Action"), this);
-				m_amkhlvRtAction->setIconText(tr("AmkhlvRt", "Action icon text: Amkhlv scroll dn"));
-// #ifndef QT_NO_SHORTCUT
-// 				m_amkhlvRtAction->setShortcut(QKeySequence::MoveToEndOfDocument);
-// #endif
+                m_amkhlvRtAction = new QAction(tr("Scroll Rt Fine", "Action"), this);
+                m_amkhlvRtAction->setIconText(tr("ScrolRtFine", "Action icon text: fine scroll rt"));
 				m_amkhlvRtAction->setObjectName(QLatin1String("amkhlv_rt"));
 				connect(m_amkhlvRtAction, SIGNAL(triggered()), receiver, slot);
         }
@@ -173,8 +170,8 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
     case PdfView::AmkhlvLt:
       if (!m_amkhlvLtAction)
         {
-				m_amkhlvLtAction = new QAction(tr("&Amkhlv Lt", "Action"), this);
-				m_amkhlvLtAction->setIconText(tr("AmkhlvLt", "Action icon text: Amkhlv scroll up"));
+                m_amkhlvLtAction = new QAction(tr("Scroll Lt Fine", "Action"), this);
+                m_amkhlvLtAction->setIconText(tr("ScrollLtFine", "Action icon text: fine scroll lt"));
 				m_amkhlvLtAction->setObjectName(QLatin1String("amkhlv_lt"));
 				connect(m_amkhlvLtAction, SIGNAL(triggered()), receiver, slot);
         }
@@ -183,8 +180,8 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
     case PdfView::AmkhlvRtF:
       if (!m_amkhlvRtFAction)
         {
-				m_amkhlvRtFAction = new QAction(tr("&Amkhlv Rt Fast", "Action"), this);
-				m_amkhlvRtFAction->setIconText(tr("AmkhlvRtF", "Action icon text: Amkhlv scroll dn fast"));
+                m_amkhlvRtFAction = new QAction(tr("Scroll Rt Medium", "Action"), this);
+                m_amkhlvRtFAction->setIconText(tr("ScrollRtMedium", "Action icon text: medium scroll rt"));
 				m_amkhlvRtFAction->setObjectName(QLatin1String("amkhlv_rt_fast"));
 				connect(m_amkhlvRtFAction, SIGNAL(triggered()), receiver, slot);
         }
@@ -193,8 +190,8 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
     case PdfView::AmkhlvLtF:
       if (!m_amkhlvLtFAction)
         {
-				m_amkhlvLtFAction = new QAction(tr("&Amkhlv Lt Fast", "Action"), this);
-				m_amkhlvLtFAction->setIconText(tr("AmkhlvLtF", "Action icon text: Amkhlv scroll up fast"));
+                m_amkhlvLtFAction = new QAction(tr("Scroll Lt Medium", "Action"), this);
+                m_amkhlvLtFAction->setIconText(tr("ScrollLtMedium", "Action icon text: medium scroll lt"));
 				m_amkhlvLtFAction->setObjectName(QLatin1String("amkhlv_lt_fast"));
 				connect(m_amkhlvLtFAction, SIGNAL(triggered()), receiver, slot);
         }

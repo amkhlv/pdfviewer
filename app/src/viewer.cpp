@@ -400,8 +400,18 @@ void PdfViewer::createMenus()
 	goMenu->addAction(m_goToStartAction);
 	goMenu->addAction(m_goToEndAction);
     goMenu->addSeparator();
+    goMenu->addAction(m_amkhlvDnAction);
+    goMenu->addAction(m_amkhlvUpAction);
+    goMenu->addAction(m_amkhlvDnFAction);
+    goMenu->addAction(m_amkhlvUpFAction);
+    goMenu->addAction(m_amkhlvRtAction);
+    goMenu->addAction(m_amkhlvLtAction);
+    goMenu->addAction(m_amkhlvRtFAction);
+    goMenu->addAction(m_amkhlvLtFAction);
+    goMenu->addSeparator();
     goMenu->addAction(m_ReturnBackAction);
-//	goMenu->addSeparator();
+
+
 //	goMenu->addAction(m_goToAction);
 
 	menuBar()->addAction(m_pdfView->action(PdfView::Bookmarks));
@@ -421,15 +431,6 @@ void PdfViewer::createMenus()
 	toolsMenu->addAction(m_mouseMagnifyAction);
 	toolsMenu->addAction(m_mouseSelectionAction);
 	toolsMenu->addAction(m_mouseTextSelectionAction);
-    toolsMenu->addSeparator();
-    toolsMenu->addAction(m_amkhlvDnAction);
-    toolsMenu->addAction(m_amkhlvUpAction);
-    toolsMenu->addAction(m_amkhlvDnFAction);
-    toolsMenu->addAction(m_amkhlvUpFAction);
-    toolsMenu->addAction(m_amkhlvRtAction);
-    toolsMenu->addAction(m_amkhlvLtAction);
-    toolsMenu->addAction(m_amkhlvRtFAction);
-    toolsMenu->addAction(m_amkhlvLtFAction);
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_pdfView->action(PdfView::ShowForms));
 
