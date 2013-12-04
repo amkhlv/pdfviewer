@@ -421,6 +421,15 @@ void PdfViewer::createMenus()
 	toolsMenu->addAction(m_mouseMagnifyAction);
 	toolsMenu->addAction(m_mouseSelectionAction);
 	toolsMenu->addAction(m_mouseTextSelectionAction);
+    toolsMenu->addSeparator();
+    toolsMenu->addAction(m_amkhlvDnAction);
+    toolsMenu->addAction(m_amkhlvUpAction);
+    toolsMenu->addAction(m_amkhlvDnFAction);
+    toolsMenu->addAction(m_amkhlvUpFAction);
+    toolsMenu->addAction(m_amkhlvRtAction);
+    toolsMenu->addAction(m_amkhlvLtAction);
+    toolsMenu->addAction(m_amkhlvRtFAction);
+    toolsMenu->addAction(m_amkhlvLtFAction);
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_pdfView->action(PdfView::ShowForms));
 
