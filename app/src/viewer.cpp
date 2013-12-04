@@ -294,7 +294,7 @@ void PdfViewer::createActions()
     m_amkhlvRtFAction = m_pdfView->action(PdfView::AmkhlvRtF);
     m_amkhlvLtFAction = m_pdfView->action(PdfView::AmkhlvLtF);
     m_ReturnBackAction = m_pdfView->action(PdfView::ReturnBack);
-    m_ReturnBackAction->setIcon(Icon("stock-undo"));
+    m_ReturnBackAction->setIcon(Icon("stock_undo"));
 
 #ifndef QT_NO_SHORTCUT
 	ShortcutHandler::instance()->addAction(m_amkhlvDnAction);
@@ -419,7 +419,7 @@ void PdfViewer::createMenus()
     m_pdfView->action(PdfView::UnSetBookmark)->setIcon(Icon("dialog-cancel"));
 	m_pdfView->action(PdfView::PreviousBookmark)->setIcon(Icon("go-up"));
 	m_pdfView->action(PdfView::NextBookmark)->setIcon(Icon("go-down"));
-    m_pdfView->action(PdfView::ReturnBack)->setIcon(Icon("stock-undo"));
+    m_pdfView->action(PdfView::ReturnBack)->setIcon(Icon("stock_undo"));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::SetBookmark));
     ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::UnSetBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::PreviousBookmark));
@@ -459,6 +459,8 @@ void PdfViewer::createToolBars()
 	m_toolBar->addAction(m_goToPageAction);
 	m_toolBar->addAction(m_goToNextPageAction);
 	m_toolBar->addSeparator();
+    m_toolBar->addAction(m_ReturnBackAction);
+    m_toolBar->addSeparator();
 	m_toolBar->addAction(m_zoomInAction);
 	m_toolBar->addAction(m_zoomAction);
 	m_toolBar->addAction(m_zoomOutAction);
@@ -521,7 +523,7 @@ void PdfViewer::createToolBarsWhenNoMenuBar()
     m_pdfView->action(PdfView::UnSetBookmark)->setIcon(Icon("dialog-cancel"));
 	m_pdfView->action(PdfView::PreviousBookmark)->setIcon(Icon("go-up"));
 	m_pdfView->action(PdfView::NextBookmark)->setIcon(Icon("go-down"));
-    m_pdfView->action(PdfView::ReturnBack)->setIcon(Icon("stock-undo"));
+    m_pdfView->action(PdfView::ReturnBack)->setIcon(Icon("stock_undo"));
 
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::SetBookmark));
     ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::UnSetBookmark));
