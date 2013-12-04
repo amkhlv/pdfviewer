@@ -32,7 +32,8 @@ BookmarksHandler::BookmarksHandler(BookmarksWidget *parent)
 	m_bookmarksWidget = parent;
 
     m_bookmarksMenu = new QMenu(tr("&Bookmarks", "Menu title"), parent->widget());
-    m_bmjump = -1;
+    m_bmjump = 0.1;
+
 
 //	QAction *setBookmarkAction = new QAction(Icon("bookmark-new"), tr("&Set Bookmark", "Action"), m_bookmarksMenu);
     QAction *setBookmarkAction = new QAction(tr("&Set Bookmark", "Action"), m_bookmarksMenu);
@@ -97,6 +98,20 @@ BookmarksHandler::BookmarksHandler(BookmarksWidget *parent)
 //#ifndef QT_NO_SHORTCUT
 //	ShortcutHandler::instance()->addAction(nextBookmarkAction);
 //#endif // QT_NO_SHORTCUT
+    QAction *returnBackAction = new QAction(tr("&Return Back after jump", "Action"), m_bookmarksMenu);
+    returnBackAction->setObjectName(QLatin1String("pdfview_return_back"));
+#ifndef QT_NO_SHORTCUT
+    returnBackAction->setShortcut(tr("Ctrl+R", "Bookmarks|ReturnBack"));
+#endif // QT_NO_SHORTCUT
+#ifndef QT_NO_STATUSTIP
+    returnBackAction->setStatusTip(tr("Return to from where was the previous jump"));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+    returnBackAction->setWhatsThis(tr("<p>Return to from where was the previous jump.</p>"));
+#endif // QT_NO_WHATSTHIS
+    returnBackAction->setEnabled(true);
+    connect(returnBackAction, SIGNAL(triggered()), this, SLOT(goReturnBack()));
+    m_bookmarksMenu->addAction(returnBackAction);
 
 	m_bookmarksMenu->addSeparator();
 }
@@ -147,6 +162,11 @@ void BookmarksHandler::setPageLabels(const QStringList &labels)
 	m_pageLabels = labels;
 }
 
+void BookmarksHandler::setWhereToReturn()
+{
+    m_where_to_return.push_back(m_bookmarksWidget->position());
+}
+
 void BookmarksHandler::updateActions()
 {
 	const double pos = m_bookmarksWidget->position();
@@ -179,7 +199,7 @@ void BookmarksHandler::insertBookmark(int index, double pos)
 	if (index >= 0 && index < m_bookmarks.size())
 	{
 		m_bookmarks.insert(index, pos);
-		m_bookmarksMenu->insertAction(m_bookmarksMenu->actions().at(index+4), action);
+        m_bookmarksMenu->insertAction(m_bookmarksMenu->actions().at(index+5), action); //this is ugly: we need index + 5 because there are 5 items above in the Bookmarks menu
 	}
 	else // append at the end
 	{
@@ -271,9 +291,10 @@ void BookmarksHandler::clear()
 
 void BookmarksHandler::goToActionBookmark()
 {
-
+    const double pos_now = m_bookmarksWidget->position();
     QAction *action = qobject_cast<QAction*>(sender());
     m_bmjump = action->data().toDouble();
+    m_where_to_return.push_back(pos_now);
     //std::cout << " jumping to bookmark position: " << m_bmjump << std::endl ;
     Q_EMIT goToPosition(m_bmjump);
 
@@ -281,19 +302,21 @@ void BookmarksHandler::goToActionBookmark()
 
 void BookmarksHandler::goToPreviousBookmark()
 {
-    //const double pos = m_bookmarksWidget->position();
+    const double pos_now = m_bookmarksWidget->position();
     const double pos = m_bmjump ;
 	for (int i = m_bookmarks.size() - 1; i >= 0; --i)
 	{
 		if (qFuzzyCompare(pos, m_bookmarks.at(i)) && i > 0) // when the bookmarks are saved and reloaded on the next startup, they are not exact anymore, so we must use qFuzzyCompare() to test whether we are on a bookmark; this must happen before the else-part to avoid staying on the current bookmark
 		{
             m_bmjump = m_bookmarks.at(i-1);
+            m_where_to_return.push_back(pos_now);
             Q_EMIT goToPosition(m_bookmarks.at(i-1));
 			return;
 		}
 		else if (pos > m_bookmarks.at(i))
 		{
             m_bmjump = m_bookmarks.at(i);
+            m_where_to_return.push_back(pos_now);
             Q_EMIT goToPosition(m_bookmarks.at(i));
 			return;
 		}
@@ -302,23 +325,34 @@ void BookmarksHandler::goToPreviousBookmark()
 
 void BookmarksHandler::goToNextBookmark()
 {
-    // const double pos = m_bookmarksWidget->position();
+    const double pos_now = m_bookmarksWidget->position();
     const double pos = m_bmjump ;
 	for (int i = 0; i < m_bookmarks.size(); ++i)
 	{
 		if (qFuzzyCompare(pos, m_bookmarks.at(i)) && i < m_bookmarks.size() - 1) // when the bookmarks are saved and reloaded on the next startup, they are not exact anymore, so we must use qFuzzyCompare() to test whether we are on a bookmark; this must happen before the else-part to avoid staying on the current bookmark
 		{
             m_bmjump = m_bookmarks.at(i+1);
+            m_where_to_return.push_back(pos_now);
             Q_EMIT goToPosition(m_bookmarks.at(i+1));
 			return;
 		}
 		else if (pos < m_bookmarks.at(i))
 		{
             m_bmjump = m_bookmarks.at(i);
+            m_where_to_return.push_back(pos_now);
             Q_EMIT goToPosition(m_bookmarks.at(i));
 			return;
 		}
 	}
+}
+
+void BookmarksHandler::goReturnBack()
+{
+    if (!m_where_to_return.isEmpty()) {
+        goToPosition(m_where_to_return.last());
+        m_where_to_return.pop_back() ;
+    }
+    return;
 }
 
 /***************************************************************************/

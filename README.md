@@ -15,7 +15,7 @@ Differences with the original version:
 
     - charhints in the bookmarks menu
 
-
+* after jumping to an internal link or a bookmark, can come back by pressing Ctrl-R
 
 
 Build and install
@@ -29,12 +29,11 @@ Configuration
 
 The configuration file `~/.config/glad/PdfViewer.conf` should contain lines:
 
-    [ShortcutHandler]
     Shortcuts\1\Action=pdfview_go_previous_page
     Shortcuts\1\Shortcut=P
     Shortcuts\2\Action=pdfview_go_next_page
     Shortcuts\2\Shortcut=N
-    Shortcuts\size=10
+    Shortcuts\size=12
     Shortcuts\3\Action=amkhlv_dn
     Shortcuts\3\Shortcut=J
     Shortcuts\4\Action=amkhlv_dn_fast
@@ -51,4 +50,7 @@ The configuration file `~/.config/glad/PdfViewer.conf` should contain lines:
     Shortcuts\9\Shortcut=H
     Shortcuts\10\Action=amkhlv_lt_fast
     Shortcuts\10\Shortcut=Shift+H
-
+    Shortcuts\11\Action=pdfview_bookmarks_prev
+    Shortcuts\11\Shortcut=[
+    Shortcuts\12\Action=pdfview_bookmarks_next
+    Shortcuts\12\Shortcut=]

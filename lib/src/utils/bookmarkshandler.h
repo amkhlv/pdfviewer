@@ -107,6 +107,7 @@ public:
 	 * Save the current bookmarks to the file specific settings on disk.
 	 */
 	void saveBookmarks();
+    void setWhereToReturn();
 
 Q_SIGNALS:
 	/**
@@ -133,6 +134,7 @@ private Q_SLOTS:
 	void goToActionBookmark();
 	void goToPreviousBookmark();
 	void goToNextBookmark();
+    void goReturnBack();
 
 private:
 	void insertBookmark(int index, double pos);
@@ -146,6 +148,7 @@ private:
 	QString m_fileName;
 	QStringList m_pageLabels;
     double m_bmjump;
+    QList<double> m_where_to_return;
 };
 
 #endif // BOOKMARKSHANDLER_H

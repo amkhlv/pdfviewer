@@ -293,7 +293,8 @@ void PdfViewer::createActions()
     m_amkhlvLtAction = m_pdfView->action(PdfView::AmkhlvLt);
     m_amkhlvRtFAction = m_pdfView->action(PdfView::AmkhlvRtF);
     m_amkhlvLtFAction = m_pdfView->action(PdfView::AmkhlvLtF);
-
+    m_ReturnBackAction = m_pdfView->action(PdfView::ReturnBack);
+    m_ReturnBackAction->setIcon(Icon("stock-undo"));
 
 #ifndef QT_NO_SHORTCUT
 	ShortcutHandler::instance()->addAction(m_amkhlvDnAction);
@@ -306,6 +307,7 @@ void PdfViewer::createActions()
 	ShortcutHandler::instance()->addAction(m_amkhlvUpFAction);
 	ShortcutHandler::instance()->addAction(m_amkhlvLtAction);
 	ShortcutHandler::instance()->addAction(m_amkhlvLtFAction);
+    ShortcutHandler::instance()->addAction(m_ReturnBackAction);
 #endif // QT_NO_SHORTCUT
 
 
@@ -397,33 +399,28 @@ void PdfViewer::createMenus()
 	goMenu->addSeparator();
 	goMenu->addAction(m_goToStartAction);
 	goMenu->addAction(m_goToEndAction);
+    goMenu->addSeparator();
+    goMenu->addAction(m_ReturnBackAction);
 //	goMenu->addSeparator();
 //	goMenu->addAction(m_goToAction);
 
 	menuBar()->addAction(m_pdfView->action(PdfView::Bookmarks));
 	m_pdfView->action(PdfView::SetBookmark)->setIcon(Icon("bookmark-new"));
     m_pdfView->action(PdfView::UnSetBookmark)->setIcon(Icon("dialog-cancel"));
-
 	m_pdfView->action(PdfView::PreviousBookmark)->setIcon(Icon("go-up"));
 	m_pdfView->action(PdfView::NextBookmark)->setIcon(Icon("go-down"));
+    m_pdfView->action(PdfView::ReturnBack)->setIcon(Icon("stock-undo"));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::SetBookmark));
     ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::UnSetBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::PreviousBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::NextBookmark));
+    ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::ReturnBack));
 
     QMenu *toolsMenu = menuBar()->addMenu(tr("&Tools", "Menu title"));
 	toolsMenu->addAction(m_mouseBrowseAction);
 	toolsMenu->addAction(m_mouseMagnifyAction);
 	toolsMenu->addAction(m_mouseSelectionAction);
 	toolsMenu->addAction(m_mouseTextSelectionAction);
-    toolsMenu->addAction(m_amkhlvDnAction);
-    toolsMenu->addAction(m_amkhlvUpAction);
-    toolsMenu->addAction(m_amkhlvDnFAction);
-    toolsMenu->addAction(m_amkhlvUpFAction);
-    toolsMenu->addAction(m_amkhlvRtAction);
-    toolsMenu->addAction(m_amkhlvLtAction);
-    toolsMenu->addAction(m_amkhlvRtFAction);
-    toolsMenu->addAction(m_amkhlvLtFAction);
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_pdfView->action(PdfView::ShowForms));
 
@@ -514,6 +511,7 @@ void PdfViewer::createToolBarsWhenNoMenuBar()
     m_pdfView->action(PdfView::UnSetBookmark)->setIcon(Icon("dialog-cancel"));
 	m_pdfView->action(PdfView::PreviousBookmark)->setIcon(Icon("go-up"));
 	m_pdfView->action(PdfView::NextBookmark)->setIcon(Icon("go-down"));
+    m_pdfView->action(PdfView::ReturnBack)->setIcon(Icon("stock-undo"));
 
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::SetBookmark));
     ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::UnSetBookmark));
@@ -527,6 +525,7 @@ void PdfViewer::createToolBarsWhenNoMenuBar()
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::AmkhlvLtF));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::PreviousBookmark));
 	ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::NextBookmark));
+    ShortcutHandler::instance()->addAction(m_pdfView->action(PdfView::ReturnBack));
     m_viewMenu = new QMenu(tr("&View", "Menu title"), toolsMenu);
 	toolsMenu->addMenu(m_viewMenu);
 	QMenu *settingsMenu = new QMenu(tr("&Settings", "Menu title"), toolsMenu);
@@ -1207,7 +1206,7 @@ void PdfViewer::selectMouseTool(int which)
 
 void PdfViewer::slotSelectMouseTool(PdfView::MouseTool tool)
 {
-	int which;
+    int which = 0;
 	if (tool == PdfView::Browsing)
 		which = 0;
 	else if (tool == PdfView::Magnifying)

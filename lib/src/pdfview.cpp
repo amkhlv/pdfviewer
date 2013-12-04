@@ -327,6 +327,7 @@ QAction *PdfView::action(PdfViewAction action)
         case UnSetBookmark:
 		case PreviousBookmark:
 		case NextBookmark:
+        case ReturnBack:
 			if (!d->m_bookmarksHandler)
 			{
 				d->m_bookmarksHandler = new BookmarksHandler(d);
@@ -344,6 +345,8 @@ QAction *PdfView::action(PdfViewAction action)
                 return d->m_bookmarksHandler->action(2);
 			else if (action == NextBookmark)
                 return d->m_bookmarksHandler->action(3);
+            else if (action == ReturnBack)
+                return d->m_bookmarksHandler->action(4);
 			break;
 
 		case Print:
@@ -1696,6 +1699,7 @@ void PdfView::mouseReleaseEvent(QMouseEvent *event)
 		if (!hoveredLink.url.isEmpty()) // we have a Browse link
 			QDesktopServices::openUrl(QUrl(hoveredLink.url));
 		else if (hoveredLink.pageNumber >= 0) // we have a Goto link
+            d->m_bookmarksHandler->setWhereToReturn();
 			setPage(hoveredLink.pageNumber);
 	}
 	else if (d->m_mouseTool == Magnifying && d->m_isDragging) // stop magnifying

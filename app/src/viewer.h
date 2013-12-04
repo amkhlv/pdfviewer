@@ -141,6 +141,7 @@ private:
     QAction *m_amkhlvLtAction;
     QAction *m_amkhlvRtFAction;
     QAction *m_amkhlvLtFAction;
+    QAction *m_ReturnBackAction;
     QActionGroup *m_settingsRenderBackendGrp;
 
 	QToolButton *m_fileOpenRecentButton;

@@ -120,7 +120,8 @@ public:
         AmkhlvRt,
         AmkhlvLt,
         AmkhlvRtF,
-        AmkhlvLtF
+        AmkhlvLtF,
+        ReturnBack
 	};
 
 	explicit PdfView(QWidget *parent = 0);
@@ -350,6 +351,7 @@ private:
 //	QSharedDataPointer<PdfViewPrivate> d;
 	PdfViewPrivate *d;
 	friend class PdfViewPrivate;
+
 };
 
 Q_DECLARE_METATYPE(PdfView::MouseTool)
