@@ -44,14 +44,16 @@ void SelectPageAction::setPageLabels(const QStringList &labels)
 	QStringList pageLabelTexts;
 	pageLabelTexts.reserve(pageCount);
 	for (int i = 0; i < pageCount; ++i)
-		pageLabelTexts << labels.at(i) + QLatin1String(" (") + QString::number(i+1) + QLatin1String(" / ") + QString::number(pageCount) + QLatin1Char(')');
-	setItems(pageLabelTexts);
+        // pageLabelTexts << labels.at(i) + QLatin1String(" (") + QString::number(i+1) + QLatin1String(" / ") + QString::number(pageCount) + QLatin1Char(')');
+        pageLabelTexts << QString::number(i+1) + QLatin1String(" / ") + QString::number(pageCount) ;
+    setItems(pageLabelTexts);
 	connect(this, SIGNAL(triggered(QString)), this, SLOT(slotGoToPage(QString)));
 }
 
 void SelectPageAction::slotGoToPage(const QString &pageLabelText)
 {
-	const int start = pageLabelText.indexOf(QLatin1Char('(')) + 1; // pageLabelText is of the form "iv (4 / 316)", so we extract the "4"
-	const int pageNumber = pageLabelText.mid(start, pageLabelText.indexOf(QLatin1Char('/')) - start).toInt() - 1;
+    // const int start = pageLabelText.indexOf(QLatin1Char('(')) + 1; // pageLabelText is of the form "iv (4 / 316)", so we extract the "4"
+    const int start = 0; // pageLabelText is of the form "4 / 316", so we extract the "4"
+    const int pageNumber = pageLabelText.mid(start, pageLabelText.indexOf(QLatin1Char('/')) - start).toInt() - 1;
 	Q_EMIT pageSelected(pageNumber);
 }
