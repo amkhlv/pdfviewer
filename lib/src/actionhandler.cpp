@@ -324,7 +324,7 @@ QAction *ActionHandler::action(PdfView::PdfViewAction action, QObject *receiver,
 		case PdfView::ShowForms:
 			if (!m_showFormsAction)
 			{
-				m_showFormsAction = new QAction(tr("S&how Forms", "Action"), this);
+				m_showFormsAction = new QAction(tr("Forms", "Action"), this);
 				m_showFormsAction->setObjectName(QLatin1String("pdfview_show_forms"));
 				m_showFormsAction->setCheckable(true);
 				connect(m_showFormsAction, SIGNAL(toggled(bool)), receiver, slot);
