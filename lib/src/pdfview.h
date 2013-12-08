@@ -253,6 +253,7 @@ public:
 	 * \param action the action to be removed from the view's context menu
 	 */
 	void removeContextMenuAction(QAction *action);
+    void amkhlvJumpToPosition(double pos);
 
 public Q_SLOTS:
 	/**

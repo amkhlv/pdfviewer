@@ -35,5 +35,6 @@
         <file>icons/pdfviewer-64.png</file>
         <file>icons/qt-logo-22.png</file>
         <file>icons/stock_undo.png</file>
+        <file>icons/reload3.png</file>
     </qresource>
 </RCC>

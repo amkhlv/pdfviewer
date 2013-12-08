@@ -167,6 +167,13 @@ void BookmarksHandler::setWhereToReturn()
     m_where_to_return.push_back(m_bookmarksWidget->position());
 }
 
+void BookmarksHandler::amkhlvJump(double pos)
+{
+    //std::cout << "PUSHING BACK " << pos << std::endl ;
+    m_where_to_return.push_back(pos);
+    goReturnBack();
+}
+
 void BookmarksHandler::updateActions()
 {
 	const double pos = m_bookmarksWidget->position();
@@ -357,6 +364,7 @@ void BookmarksHandler::goToNextBookmark()
 void BookmarksHandler::goReturnBack()
 {
     if (!m_where_to_return.isEmpty()) {
+        //std::cout << " about to return to " << m_where_to_return.last() << std::endl ;
         goToPosition(m_where_to_return.last());
         m_where_to_return.pop_back() ;
     }

@@ -18,7 +18,7 @@
 #include <QDebug>
 #include "pdfview.h"
 #include "pdfview_p.h"
-
+#include <iostream>
 #include "pageitem.h"
 #include "actionhandler.h"
 #include "printhandler.h"
@@ -181,6 +181,18 @@ void PdfViewPrivate::slotSelectMouseTool()
 void PdfView::setMaximumFileSettingsCacheSize(int size)
 {
 	d->m_maxFileSettingsCacheSize = size;
+}
+
+void PdfView::amkhlvJumpToPosition(double pos)
+{
+    if (!d->m_bookmarksHandler)
+    {
+        d->m_bookmarksHandler = new BookmarksHandler(d);
+        connect(d->m_bookmarksHandler, SIGNAL(goToPosition(double)), d, SLOT(slotSetPage(double)));
+        if (!d->m_popplerDocument)
+            d->m_bookmarksHandler->action(0)->setEnabled(false);
+    }
+    d->m_bookmarksHandler->amkhlvJump(pos);
 }
 
 /*******************************************************************/
@@ -846,11 +858,18 @@ void PdfView::setPage(double pageNumber, PositionHandling keepPosition)
 		return;
 	QScrollBar *vbar = verticalScrollBar();
 	disconnect(vbar, SIGNAL(valueChanged(int)), d, SLOT(slotVerticalPositionChanged(int)));
-	const int newValue = keepPosition == KeepPosition // we must use qRound() here, otherwise vbar->value() is incorrectly set which leads to sometimes not being able to go to the next bookmark (because here the current position is being set as less than the bookmark position)
-		? qRound(d->m_popplerPageTopPositions.at(d->m_pageNumber) * d->scaleFactorY() + vbar->value() - d->m_popplerPageTopPositions.at(pageNumberOld) * d->scaleFactorY())
-		: qRound((d->m_popplerPageTopPositions.at(d->m_pageNumber) - s_interPageSpace / 2) * d->scaleFactorY() // we subtract s_interPageSpace / 2 here in order to show some space above the page when pageNumber is an integer
-		         + (d->m_popplerPageTopPositions.at(d->m_pageNumber+1) - d->m_popplerPageTopPositions.at(d->m_pageNumber) - s_interPageSpace) * d->scaleFactorY() * (pageNumber - int(pageNumber))); // the converse of this is used in pageNumberWithPosition()
-	vbar->setValue(newValue);
+    double v1 = vbar->value() / d->scaleFactorY();
+    double vert_pos = v1 * d->scaleFactorY();
+    double rounded_diff = (   d->m_popplerPageTopPositions.at(d->m_pageNumber)
+                                  - d->m_popplerPageTopPositions.at(pageNumberOld)) * d->scaleFactorY();
+    const int newValue = keepPosition == KeepPosition // we must use qRound() here, otherwise vbar->value() is incorrectly set which leads to sometimes not being able to go to the next bookmark (because here the current position is being set as less than the bookmark position)
+        ? qRound((rounded_diff + vert_pos))
+        : qRound((d->m_popplerPageTopPositions.at(d->m_pageNumber) - s_interPageSpace / 2) * d->scaleFactorY() // we subtract s_interPageSpace / 2 here in order to show some space above the page when pageNumber is an integer
+          + (d->m_popplerPageTopPositions.at(d->m_pageNumber+1)
+             - d->m_popplerPageTopPositions.at(d->m_pageNumber)
+             - s_interPageSpace) * d->scaleFactorY() * (pageNumber - int(pageNumber))) ;
+                 // the converse of this is used in pageNumberWithPosition()
+    vbar->setValue(newValue);
 	d->scrollPositionChanged();
 	connect(vbar, SIGNAL(valueChanged(int)), d, SLOT(slotVerticalPositionChanged(int)));
 //qCritical() << "setPage" << t.msecsTo(QTime::currentTime());
@@ -863,7 +882,7 @@ void PdfViewPrivate::slotSetPage(int pageNumber)
 
 void PdfViewPrivate::slotSetPage(double pageNumber)
 {
-	q->setPage(pageNumber);
+    q->setPage(pageNumber,PdfView::DontKeepPosition);
 }
 
 double PdfView::pageNumberWithPosition() const
@@ -1462,7 +1481,7 @@ void PdfView::slotGoToPreviousPage()
 void PdfView::slotGoToNextPage()
 {
 	if (d->m_popplerDocument && d->m_pageNumber < d->m_popplerDocument->numPages() - 1)
-		setPage(d->m_pageNumber + 1);
+        setPage(d->m_pageNumber + 1, KeepPosition);
 }
 
 /*******************************************************************/

@@ -24,6 +24,7 @@
 #include <QtGui/QMainWindow>
 #include <poppler-qt4.h>
 #include <pdfview.h>
+#include <utils/bookmarkshandler.h>
 
 class QAbstractButton;
 class QAction;
@@ -142,6 +143,7 @@ private:
     QAction *m_amkhlvRtFAction;
     QAction *m_amkhlvLtFAction;
     QAction *m_ReturnBackAction;
+    QAction *m_ReloadDocAction;
     QActionGroup *m_settingsRenderBackendGrp;
 
 	QToolButton *m_fileOpenRecentButton;

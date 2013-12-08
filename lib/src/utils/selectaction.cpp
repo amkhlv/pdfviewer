@@ -82,7 +82,7 @@ void SelectAction::setItems(const QStringList &items)
 	m_selectCombo->clear();
 	m_selectCombo->addItems(items);
 	const QFontMetrics fm = m_selectCombo->fontMetrics();
-	m_selectCombo->setMinimumWidth(fm.width(items.at(items.size()-1) + QLatin1String("aaaaa")));
+    m_selectCombo->setMinimumWidth(fm.width(items.at(items.size()-1) + QLatin1String("aaaaa")));
 }
 
 void SelectAction::setCurrentIndex(int index)

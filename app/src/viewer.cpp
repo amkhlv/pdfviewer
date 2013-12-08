@@ -37,6 +37,8 @@
 #include "shortcuthandler/shortcuthandler.h"
 #include "utils/icon.h"
 #include "utils/recentfilesaction.h"
+#include "utils/bookmarkshandler.h"
+#include <iostream>
 
 #include <pdfview.h>
 
@@ -97,6 +99,7 @@ PdfViewer::PdfViewer()
 	connect(m_pdfView, SIGNAL(openTexDocument(QString,int)), this, SLOT(slotOpenTexDocument(QString,int)));
 	connect(m_pdfView, SIGNAL(mouseToolChanged(PdfView::MouseTool)), this, SLOT(slotSelectMouseTool(PdfView::MouseTool)));
 
+
 	// setup the central widget
 	QWidget *mainWidget = new QWidget(this);
 	QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -130,7 +133,8 @@ PdfViewer::PdfViewer()
 
 	// watch file changes
 	m_watcher = new QFileSystemWatcher(this);
-	connect(m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(slotReloadWhenIdle(QString)));
+    // commented out by amkhlv:
+    // connect(m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(slotReloadWhenIdle(QString)));
 
 	// setup presentation view (we must do this here in order to have access to the shortcuts)
 	m_presentationWidget = new PresentationWidget;
@@ -168,6 +172,16 @@ void PdfViewer::createActions()
 	connect(m_fileOpenAction, SIGNAL(triggered()), this, SLOT(slotOpenFile()));
 #ifndef QT_NO_SHORTCUT
 	ShortcutHandler::instance()->addAction(m_fileOpenAction);
+#endif // QT_NO_SHORTCUT
+
+    m_ReloadDocAction = new QAction(Icon("reload3"), tr("Re&load...", "Action: reload file"), this);
+#ifndef QT_NO_SHORTCUT
+    m_ReloadDocAction->setShortcut(tr("Ctrl+L"));
+#endif // QT_NO_SHORTCUT
+    m_ReloadDocAction->setObjectName("file_reload");
+    connect(m_ReloadDocAction, SIGNAL(triggered()), this, SLOT(slotReload()));
+#ifndef QT_NO_SHORTCUT
+    ShortcutHandler::instance()->addAction(m_ReloadDocAction);
 #endif // QT_NO_SHORTCUT
 
     m_fileSaveCopyAction = new QAction(Icon("document-save-as"), tr("&Save a Copy...", "Action: save a copy of the open file"), this);
@@ -308,6 +322,7 @@ void PdfViewer::createActions()
 	ShortcutHandler::instance()->addAction(m_amkhlvLtAction);
 	ShortcutHandler::instance()->addAction(m_amkhlvLtFAction);
     ShortcutHandler::instance()->addAction(m_ReturnBackAction);
+    ShortcutHandler::instance()->addAction(m_ReloadDocAction);
 #endif // QT_NO_SHORTCUT
 
 
@@ -374,6 +389,7 @@ void PdfViewer::createMenus()
     QMenu *fileMenu = menuBar()->addMenu(tr("&File", "Menu title"));
 	fileMenu->addAction(m_fileOpenAction);
 	fileMenu->addAction(m_fileOpenRecentAction);
+    fileMenu->addAction(m_ReloadDocAction);
     fileMenu->addSeparator();
 	fileMenu->addAction(m_fileSaveCopyAction);
     fileMenu->addSeparator();
@@ -454,6 +470,7 @@ void PdfViewer::createToolBars()
 	m_toolBar = addToolBar(tr("Main Tool Bar"));
 	m_toolBar->setObjectName("MainToolBar");
 	m_toolBar->addAction(m_fileOpenAction);
+    m_toolBar->addAction(m_ReloadDocAction);
 	m_toolBar->addSeparator();
 	m_toolBar->addAction(m_goToPreviousPageAction);
 	m_toolBar->addAction(m_goToPageAction);
@@ -864,7 +881,12 @@ void PdfViewer::slotReloadWhenIdle(const QString &file)
 
 void PdfViewer::slotReload()
 {
-	loadDocument(m_file); // using DocumentObserver::KeepPosition as second argument doesn't work, but since closeDocument() saves the current position, this is not a problem
+    double cur_pos = m_pdfView->pageNumberWithPosition();
+    //std::cout << "POSITION WAS " << cur_pos << std::endl ;
+    QString filename = m_file;
+    closeDocument();
+    loadDocument(filename); // using DocumentObserver::KeepPosition as second argument doesn't work, but since closeDocument() saves the current position, this is not a problem
+    m_pdfView->amkhlvJumpToPosition(cur_pos);
 }
 
 /*******************************************************************/
@@ -959,13 +981,13 @@ void PdfViewer::slotShowPresentation()
 void PdfViewer::slotGoToPreviousPage()
 {
 	if (m_currentPage > 0)
-		setPage(m_currentPage - 1);
+        setPage(m_currentPage - 1);
 }
 
 void PdfViewer::slotGoToNextPage()
 {
 	if (m_currentPage < m_pdfView->document()->numPages() - 1)
-		setPage(m_currentPage + 1);
+        setPage(m_currentPage + 1);
 }
 
 void PdfViewer::slotGoToPage(int pageNumber)

@@ -108,6 +108,7 @@ public:
 	 */
 	void saveBookmarks();
     void setWhereToReturn();
+    void amkhlvJump(double pos);
 
 Q_SIGNALS:
 	/**
