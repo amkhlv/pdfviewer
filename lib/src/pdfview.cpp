@@ -856,14 +856,23 @@ void PdfView::setPage(double pageNumber, PositionHandling keepPosition)
 	// update scrollbar
 	if (keepPosition == DontUpdatePosition)
 		return;
-	QScrollBar *vbar = verticalScrollBar();
+    QScrollBar *vbar = verticalScrollBar();
 	disconnect(vbar, SIGNAL(valueChanged(int)), d, SLOT(slotVerticalPositionChanged(int)));
-    double v1 = vbar->value() / d->scaleFactorY();
-    double vert_pos = v1 * d->scaleFactorY();
-    double rounded_diff = (   d->m_popplerPageTopPositions.at(d->m_pageNumber)
-                                  - d->m_popplerPageTopPositions.at(pageNumberOld)) * d->scaleFactorY();
+    double vert_pos = vbar->value();
+    double delta_vert_pos = (   d->m_popplerPageTopPositions.at(d->m_pageNumber)
+                              - d->m_popplerPageTopPositions.at(pageNumberOld)
+                            ) * d->scaleFactorY();
+    //conversion between scrollbar value and vertical position leads to rounding error, and therefore drift at PgUp/PgDn
+    //to minimize this drift, we introduce a random correction:
+    int r0 = qrand();
+    int r = r0 - (r0 / 100) * 100;
+    int rounded = qRound(delta_vert_pos + vert_pos);
+    int rem100 = qRound( 100*(delta_vert_pos + vert_pos - rounded));
+    int correction = 0;
+    if ( r <  qAbs(rem100) ) { correction = (rem100 > 0) ? 1 : -1 ; }
+    //std::cout << "Random r: " << r << ", Rem10: " << rem100 << ", correction: " << correction << std::endl ;
     const int newValue = keepPosition == KeepPosition // we must use qRound() here, otherwise vbar->value() is incorrectly set which leads to sometimes not being able to go to the next bookmark (because here the current position is being set as less than the bookmark position)
-        ? qRound((rounded_diff + vert_pos))
+        ? qRound((delta_vert_pos + vert_pos)) + correction
         : qRound((d->m_popplerPageTopPositions.at(d->m_pageNumber) - s_interPageSpace / 2) * d->scaleFactorY() // we subtract s_interPageSpace / 2 here in order to show some space above the page when pageNumber is an integer
           + (d->m_popplerPageTopPositions.at(d->m_pageNumber+1)
              - d->m_popplerPageTopPositions.at(d->m_pageNumber)
@@ -1481,7 +1490,7 @@ void PdfView::slotGoToPreviousPage()
 void PdfView::slotGoToNextPage()
 {
 	if (d->m_popplerDocument && d->m_pageNumber < d->m_popplerDocument->numPages() - 1)
-        setPage(d->m_pageNumber + 1, KeepPosition);
+        setPage(d->m_pageNumber + 1);
 }
 
 /*******************************************************************/
