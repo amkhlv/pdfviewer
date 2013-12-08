@@ -17,6 +17,9 @@ Differences with the original version:
 
 * after jumping to an internal link or a bookmark, can come back by pressing Ctrl-R
 
+* instead of automatic reload on document change (which may be problematic with some
+versions of LaTeX) we use manual reload on pressing Ctrl-L
+
 
 Build and install
 =================
