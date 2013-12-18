@@ -1062,13 +1062,13 @@ qreal PdfView::zoomFactor() const
 void PdfView::slotZoomIn()
 {
 	setZoomFactor(d->m_zoomFactor + (d->m_zoomFactor > 0.99 ?
-	    (d->m_zoomFactor > 1.99 ? 0.5 : 0.2) : 0.1));
+	    (d->m_zoomFactor > 1.99 ? 0.2 : 0.05) : 0.05));
 }
 
 void PdfView::slotZoomOut()
 {
 	setZoomFactor(d->m_zoomFactor - (d->m_zoomFactor > 1.01 ?
-	    (d->m_zoomFactor > 2.01 ? 0.5 : 0.2) : 0.1));
+	    (d->m_zoomFactor > 2.01 ? 0.2 : 0.05) : 0.05));
 }
 
 /*******************************************************************/
