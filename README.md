@@ -24,6 +24,10 @@ versions of LaTeX) we use manual reload on pressing Ctrl-L
 Build and install
 =================
 
+First need to install build dependencies, at least these:
+
+     aptitude install build-essential libqt4-dev qt4-dev-tools libpoppler-qt4-dev zlib1g-dev libconfig++8-dev
+
 go to `qtbuild/` and execute  `amkhlv_build.sh` there
 
 
