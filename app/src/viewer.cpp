@@ -467,21 +467,45 @@ void PdfViewer::createMenus()
 
 void PdfViewer::createToolBars()
 {
-	m_toolBar = addToolBar(tr("Main Tool Bar"));
-	m_toolBar->setObjectName("MainToolBar");
+    m_toolBar = addToolBar(tr("Main Tool Bar"));
+    m_toolBar->setObjectName("MainToolBar");
+    QWidget *zoomBar = new QWidget(m_toolBar);
+    QHBoxLayout *zoomLayout = new QHBoxLayout;
+    zoomBar->setLayout(zoomLayout);
+    QToolButton *zoomInBtn = new QToolButton(zoomBar);
+    zoomInBtn->setIcon(Icon("zoom-in"));
+    connect(zoomInBtn,SIGNAL( clicked()), m_pdfView, SLOT(slotZoomIn()));
+    QToolButton *zoomOutBtn = new QToolButton(zoomBar);
+    zoomOutBtn->setIcon(Icon("zoom-out"));
+    connect(zoomOutBtn,SIGNAL( clicked()), m_pdfView, SLOT(slotZoomOut()));
+    zoomLayout->addWidget(zoomInBtn);
+    zoomLayout->addWidget(zoomOutBtn);
+
+    QWidget *navBar = new QWidget(m_toolBar);
+    QHBoxLayout *navLayout = new QHBoxLayout;
+    navBar->setLayout(navLayout);
+    QToolButton *navPrevBtn = new QToolButton(navBar);
+    navPrevBtn->setIcon(Icon("go-previous"));
+    connect(navPrevBtn,SIGNAL( clicked()), m_pdfView, SLOT(slotGoToPreviousPage()));
+    QToolButton *navNextBtn = new QToolButton(navBar);
+    navNextBtn->setIcon(Icon("go-next"));
+    connect(navNextBtn,SIGNAL( clicked()), m_pdfView, SLOT(slotGoToNextPage()));
+    navLayout->addWidget(navPrevBtn);
+    navLayout->addWidget(navNextBtn);
+
 	m_toolBar->addAction(m_fileOpenAction);
     m_toolBar->addAction(m_ReloadDocAction);
-	m_toolBar->addSeparator();
-	m_toolBar->addAction(m_goToPreviousPageAction);
-	m_toolBar->addAction(m_goToPageAction);
-	m_toolBar->addAction(m_goToNextPageAction);
-	m_toolBar->addSeparator();
-    m_toolBar->addAction(m_ReturnBackAction);
     m_toolBar->addSeparator();
-	m_toolBar->addAction(m_zoomInAction);
+    m_toolBar->addAction(m_ReturnBackAction);
+    //m_toolBar->addAction(m_goToPreviousPageAction);
+	m_toolBar->addAction(m_goToPageAction);
+    m_toolBar->addWidget(navBar);
+    //m_toolBar->addAction(m_goToNextPageAction);
+    //m_toolBar->addAction(m_zoomInAction);
 	m_toolBar->addAction(m_zoomAction);
-	m_toolBar->addAction(m_zoomOutAction);
-	m_toolBar->addSeparator();
+    m_toolBar->addWidget(zoomBar);
+    //m_toolBar->addAction(m_zoomOutAction);
+    m_toolBar->addSeparator();
 	m_toolBar->addAction(m_mouseBrowseAction);
 	m_toolBar->addAction(m_mouseMagnifyAction);
 	m_toolBar->addAction(m_mouseSelectionAction);
