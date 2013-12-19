@@ -36,6 +36,10 @@ Configuration
 
 The configuration file `~/.config/glad/PdfViewer.conf` should contain lines:
 
+    [MainWindow]
+    ShowMenuBar=true
+
+    [ShortcutHandler]
     Shortcuts\1\Action=pdfview_go_previous_page
     Shortcuts\1\Shortcut=P
     Shortcuts\2\Action=pdfview_go_next_page
