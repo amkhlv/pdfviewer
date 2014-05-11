@@ -1373,6 +1373,15 @@ void PdfViewPrivate::removeTextSelection()
 /*******************************************************************/
 // Synctex
 
+double PdfView::getTopOfCurrentPage(double vert_pos){
+    double toppage_vert_pos = 1;
+    for (int i = 0; i < d->m_popplerPageTopPositions.size(); ++i) {
+            if (vert_pos < (d->m_popplerPageTopPositions.at(i)* d->scaleFactorY())) break ;
+            toppage_vert_pos = d->m_popplerPageTopPositions.at(i)* d->scaleFactorY();
+    }
+    return toppage_vert_pos;
+}
+
 void PdfView::syncFromSource(const QString &sourceFile, int lineNumber)
 {
 #ifdef USE_SYNCTEX
@@ -1382,6 +1391,12 @@ void PdfView::syncFromSource(const QString &sourceFile, int lineNumber)
 	d->removeTextSelection(); // dirty hack: we use m_textSelectionRects below
 	QList<SynctexTextBox> textBoxList = d->m_synctexHandler->syncFromSource(sourceFile, lineNumber);
 
+    QScrollBar *vbar = verticalScrollBar();
+    //disconnect(vbar, SIGNAL(valueChanged(int)), d, SLOT(slotVerticalPositionChanged(int)));
+    double vert_pos = vbar->value();
+    //double toppage_vert_pos = d->m_popplerPageTopPositions.at(d->m_pageNumber);
+    double pos_delta = vert_pos - getTopOfCurrentPage(vert_pos) ;
+
 	for (int i = 0; i < textBoxList.size(); ++i)
 	{
 		// dirty hack: since syncing from source and selecting text don't happen at the same time, we use m_textSelectionRects to highlight the lines in the PDF which correspond to lineNumber in the source
@@ -1389,6 +1404,12 @@ void PdfView::syncFromSource(const QString &sourceFile, int lineNumber)
 		d->m_textSelectionRects.last()->setZValue(2);
 		ensureVisible(d->m_textSelectionRects.last()->boundingRect(), 3, 3);
 	}
+
+    double new_vert_pos = vbar->value();
+    vbar->setValue(getTopOfCurrentPage(new_vert_pos) + pos_delta);
+
+    //connect(vbar, SIGNAL(valueChanged(int)), d, SLOT(slotVerticalPositionChanged(int)));
+    //d->scrollPositionChanged();
 #else
 	Q_UNUSED(sourceFile);
 	Q_UNUSED(lineNumber);

@@ -230,6 +230,14 @@ public:
 	 */
 	qreal zoomFactor() const;
 
+    /**
+     * @brief getTopOfCurrentPage
+     * @param vert_pos
+     * @return
+     * This is my helper function - Andrei
+     */
+    double getTopOfCurrentPage(double vert_pos);
+
 	/**
 	 * This function must be executed by the main application when
 	 * "forward search" is requested.
