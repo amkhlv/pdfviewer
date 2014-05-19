@@ -66,5 +66,5 @@ The configuration file `~/.config/glad/PdfViewer.conf` should contain lines:
     Shortcuts\12\Action=pdfview_bookmarks_next
     Shortcuts\12\Shortcut=]
 
-__HINT__ : I recommend to drag the menu bar (with the mouse) to the left side of the window, so it becomes horizonthal. 
+__HINT__ : I recommend to drag the toolbar to the left side of the window (using the mouse), so it becomes horizonthal. 
  
