@@ -28,8 +28,15 @@ First need to install build dependencies, at least these:
 
      aptitude install build-essential libqt4-dev qt4-dev-tools libpoppler-qt4-dev zlib1g-dev libconfig++8-dev
 
-go to `qtbuild/` and execute  `amkhlv_build.sh` there
+Then:
 
+     mkdir build
+     cd build
+     qmake ../pdfviewer-standalone.pro
+     make
+     sudo make install
+
+(the prefix will be `/usr/local`)
 
 Configuration
 =============
