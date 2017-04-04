@@ -1,3 +1,9 @@
+Deprecation notice
+==================
+
+<span style="color: red;"><b>Deprecation notice:</b></span> I do not maintain this program, too complicated. 
+I [use instead pdq](https://github.com/amkhlv/pdq) , which is intentionally simple and has all features I need.
+
 PdfViewer
 =========
 
